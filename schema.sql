@@ -2,52 +2,7 @@
 CREATE EXTENSION postgis;
 CREATE EXTENSION postgis_topology;
 
---DROP TABLE reports;
-CREATE TABLE reports(
-	pkey bigint NOT NULL,
-	created_at timestamp with time zone,
-	source char(7),
-	text character varying,
-	CONSTRAINT pkey_reports PRIMARY KEY (pkey)
-);
-
--- Add Geometry column to reports
-SELECT AddGeometryColumn ('public','reports','the_geom',4326,'POINT',2);
-
--- Function: update_reports()
--- DROP FUNCTION update_reports();
-
-CREATE OR REPLACE FUNCTION update_reports()
-  RETURNS trigger AS
-$BODY$
-	BEGIN
-		IF (TG_OP = 'UPDATE') THEN
-			IF (TG_TABLE_NAME = 'tweet_reports') THEN
-				INSERT INTO reports SELECT NEW.pkey, NEW.created_at, 'Twitter', NEW.text, NEW.the_geom;
-				RETURN NEW;
-			ELSIF (TG_TABLE_NAME = 'web_reports') THEN
-				INSERT INTO reports SELECT NEW.pkey, NEW.created_at, 'Web', NEW.text, NEW.the_geom;
-				RETURN NEW;
-			END IF;
-		ELSIF (TG_OP = 'INSERT') THEN
-			IF (TG_TABLE_NAME = 'tweet_reports') THEN
-				INSERT INTO reports SELECT NEW.pkey, NEW.created_at, 'Twitter', NEW.text, NEW.the_geom;
-				RETURN NEW;
-			ELSIF (TG_TABLE_NAME = 'web_reports') THEN
-				INSERT INTO reports SELECT NEW.pkey, NEW.created_at, 'Web', NEW.text, NEW.the_geom;
-				RETURN NEW;
-			END IF;
-		END IF;
-	END;
-$BODY$
-  LANGUAGE plpgsql VOLATILE
-  COST 100;
-ALTER FUNCTION update_reports()
-  OWNER TO postgres;
-
-CREATE SEQUENCE report_key;
-
--- Table: tweet_reorts
+-- Table: tweet_reports
 -- DROP TABLE tweet_reports;
 
 CREATE TABLE tweet_reports
@@ -68,14 +23,6 @@ WITH (
 ALTER TABLE tweet_reports
   OWNER TO postgres;
 
--- Trigger: update_tweets_snapped_500m on tweets
-
-CREATE TRIGGER update_tweet_reports
-  AFTER INSERT OR UPDATE
-  ON tweet_reports
-  FOR EACH ROW
-  EXECUTE PROCEDURE update_reports();
-
 -- Add Geometry column to tweet_reports
 SELECT AddGeometryColumn ('public','tweet_reports','the_geom',4326,'POINT',2);
 
@@ -94,39 +41,6 @@ WITH (
 );
 ALTER TABLE tweet_users
   OWNER TO postgres;
-
--- Table: web_reports
--- DROP TABLE tweet_reports;
-
-CREATE TABLE web_reports
-(
-  pkey bigint NOT NULL DEFAULT nextval('report_key'),
-  created_at timestamp with time zone DEFAULT now(),
-  screen_name character varying,
-  email character varying,
-  text character varying,
-  lang character varying,
-  details_consent boolean,
-  CONSTRAINT pkey_web PRIMARY KEY (pkey)
-)
-WITH (
-  OIDS=FALSE
-);
-ALTER TABLE web_reports
-  OWNER TO postgres;
-
--- Trigger: update_tweets_snapped_500m on tweets
-
--- DROP TRIGGER update_tweets_snapped_500m ON tweets;
-
-CREATE TRIGGER update_web_reports
-  AFTER INSERT OR UPDATE
-  ON web_reports
-  FOR EACH ROW
-  EXECUTE PROCEDURE update_reports();
-
--- Add Geometry column to tweet_reports
-SELECT AddGeometryColumn ('public','web_reports','the_geom',4326,'POINT',2);
 
 -- Create table for non spatial tweets
 CREATE TABLE nonspatial_tweet_reports
@@ -187,7 +101,7 @@ CREATE OR REPLACE FUNCTION update_all_users()
 		INSERT INTO all_users(user_hash) SELECT NEW.user_hash WHERE NOT EXISTS (SELECT user_hash FROM all_users WHERE user_hash = NEW.user_hash);
 		RETURN NEW;
 	END;
-	
+
 $update_all_users$ LANGUAGE plpgsql;
 
 CREATE TRIGGER non_spatial_all_users BEFORE INSERT OR UPDATE ON nonspatial_tweet_users
