@@ -26,6 +26,9 @@ ALTER TABLE tweet_reports
 -- Add Geometry column to tweet_reports
 SELECT AddGeometryColumn ('public','tweet_reports','the_geom',4326,'POINT',2);
 
+-- Add GIST spatial index
+CREATE INDEX gix_tweet_reports ON tweet_reports USING gist (the_geom);
+
 -- Table: tweet_users
 -- DROP TABLE tweet_users;
 
@@ -71,6 +74,10 @@ CREATE TABLE tweet_reports_unconfirmed
 -- Add Geometry column to tweet_reports
 SELECT AddGeometryColumn ('public','tweet_reports_unconfirmed','the_geom',4326,'POINT',2);
 
+-- Creat Gist spatial index on unconfirmed reports
+CREATE INDEX gix_tweet_reports_unconfirmed ON tweet_reports_unconfirmed USING gist (the_geom);
+
+-- Tweet invitees
 CREATE TABLE tweet_invitees
 (
  pkey bigserial,
