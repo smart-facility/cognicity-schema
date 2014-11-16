@@ -7,7 +7,7 @@ CREATE EXTENSION postgis_topology;
 
 CREATE TABLE tweet_reports
 (
-  pkey bigint NOT NULL DEFAULT nextval('report_key'),
+  pkey bigint,
   database_time timestamp with time zone DEFAULT now(),
   created_at timestamp with time zone,
   text character varying,
