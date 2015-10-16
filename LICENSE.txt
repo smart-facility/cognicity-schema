@@ -1,4 +1,4 @@
-CogniCity-Server: NodeJS server for the CogniCity GeoSocial Intelligence framework.
+CogniCity-Schema: PostgreSQL/PostGIS schema for the CogniCity GeoSocial Intelligence framework.
 
 Copyright (C) 2013 Tomas Holderness, Etienne Turpin & University of Wollongong
 
@@ -13,7 +13,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program.  If not, see [http://www.gnu.org/licenses/].                  
+along with this program.  If not, see [http://www.gnu.org/licenses/].
 
 
                       GNU GENERAL PUBLIC LICENSE

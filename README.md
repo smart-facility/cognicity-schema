@@ -42,7 +42,7 @@ The following tables are also included as samples of ancillary data used for map
 
 <dl>Hydrological Infrastructure Data (pumps, floodgates, waterways) is licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>. <img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/80x15.png"/></a>
 </dl>
-* Data available from [Research Data Australia](https://researchdata.ands.org.au/petajakartaorg/552178) (Australian National Data Service), with DOIs held by the National Library of Australia.
+* Hydrological data are available from [Research Data Australia](https://researchdata.ands.org.au/petajakartaorg/552178) (Australian National Data Service), with DOIs held by the National Library of Australia.
 
 ### Dependencies
 * [PostgreSQL](http://www.postgresql.org) version 9.2 or later, with
@@ -54,9 +54,9 @@ The following tables are also included as samples of ancillary data used for map
 #### Restoring the schema
 1. Create an empty database, using `createdb.sql` for required properties
 2. Load the schema into the new database
-```shell
-psql -d cognicity -f schema.sql
-```
+  ```shell
+  psql -d cognicity -f schema.sql
+  ```
 3. Optionally load the sample data...
 
 ### License
