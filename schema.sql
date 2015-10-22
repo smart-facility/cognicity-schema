@@ -5,6 +5,48 @@ CREATE EXTENSION postgis_topology;
 -- Table: tweet_reports
 -- DROP TABLE tweet_reports;
 
+-- Create Table to store reports
+CREATE TABLE all_reports
+(
+  pkey bigserial,
+  database_time timestamp with time zone DEFAULT now(),
+  created_at timestamp with time zone,
+  text character varying NOT NULL,
+  source character varying NOT NULL,
+  lang character varying,
+  url character varying,
+  image_url character varying,
+  title character varying,
+  CONSTRAINT pkey_tweets PRIMARY KEY (pkey)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE tweet_reports
+  OWNER TO postgres;
+
+-- Add Geometry column to tweet_reports
+SELECT AddGeometryColumn ('public','all_reports','the_geom',4326,'POINT',2);
+ALTER TABLE all_reports ALTER COLUMN the_geom SET NOT NULL;
+
+-- Add GIST spatial index
+CREATE INDEX gix_tweet_reports ON tweet_reports USING gist (the_geom);
+
+-- Document the table
+COMMENT ON TABLE all_reports IS 'Reports from all input data sources';
+COMMENT ON COLUMN all_reports.pkey IS '{bigserial} [Primary Key] Unique key for each report';
+COMMENT ON COLUMN all_reports.database_time IS '{timestamp with timezone} Time report written to table';
+COMMENT ON COLUMN all_reports.created_at IS '{timestamp with timezone} Time of report as recorded at data source';
+COMMENT ON COLUMN all_reports.text IS '{character varying} The text of the report';
+COMMENT ON COLUMN all_reports.source IS '{character varying} Data source of the report';
+COMMENT ON COLUMN all_repots.lang IS '{character varying | NULL} Language of report text in all_reports.text';
+COMMENT ON COLUMN all_reports.url IS '{character varying | NULL} URL link to report data source';
+COMMENT ON COLUMN all_reports.image_url IS '{character varying | NULL} URL link to report image';
+COMMENT ON COLUMN all_reports.title IS '{character varying | NULL} Short description of report';
+COMMENT ON COLUMN all_repots.the_geom IS '{geometry object} Point location for report using the WGS 1984 coordinate reference system';
+COMMENT ON INDEX gix_tweet_reports IS 'Generalized Search Tree Index on all_reports.the_geom';
+
+-- Create table for Twitter reports
 CREATE TABLE tweet_reports
 (
   pkey bigint,
@@ -29,9 +71,7 @@ SELECT AddGeometryColumn ('public','tweet_reports','the_geom',4326,'POINT',2);
 -- Add GIST spatial index
 CREATE INDEX gix_tweet_reports ON tweet_reports USING gist (the_geom);
 
--- Table: tweet_users
--- DROP TABLE tweet_users;
-
+-- Create table for Twitter report users
 CREATE TABLE tweet_users
 (
   pkey bigserial,
