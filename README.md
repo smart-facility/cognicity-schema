@@ -57,7 +57,12 @@ The following tables are also included as samples of ancillary data used for map
   ```shell
   psql -d cognicity -f schema.sql
   ```
-3. Optionally, load the sample data which was created using `pg_dump` so should be loaded using `pg_restore`.
-
+3. Optionally, load the sample data:
+  ```shell
+  for datafile in sample_data/*.sql
+  do
+    psql -d cognicity -f $datafile
+  done
+  ```
 ### License
 The schema is released under the GPLv3 License. See License.txt for details.
