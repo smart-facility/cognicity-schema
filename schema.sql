@@ -2,20 +2,50 @@
 CREATE EXTENSION postgis;
 CREATE EXTENSION postgis_topology;
 
+-- Create Trigger Function to update all_reports table
+CREATE OR REPLACE FUNCTION public.update_reports()
+  RETURNS trigger AS
+$BODY$
+	BEGIN
+		IF (TG_OP = 'UPDATE') THEN
+			IF (TG_TABLE_NAME = 'tweet_reports') THEN
+				INSERT INTO all_reports (fkey, created_at, text, source, lang, url, the_geom) SELECT NEW.pkey, NEW.created_at, NEW.text, 'twitter', NEW.lang, NEW.url, NEW.the_geom;
+				RETURN NEW;
+			ELSIF (TG_TABLE_NAME = 'detik_reports') THEN
+				INSERT INTO all_reports (fkey, created_at, text, source, lang, url, image_url, title, the_geom) SELECT NEW.pkey, NEW.created_at, NEW.text, 'detik', NEW.url, NEW.image_url, NEW.title, NEW.the_geom;
+				RETURN NEW;
+			END IF;
+		ELSIF (TG_OP = 'INSERT') THEN
+			IF (TG_TABLE_NAME = 'tweet_reports') THEN
+				INSERT INTO all_reports (fkey, created_at, text, source, lang, url, the_geom) SELECT NEW.pkey, NEW.created_at, NEW.text, 'twitter', NEW.lang, NEW.url, NEW.the_geom;
+				RETURN NEW;
+			ELSIF (TG_TABLE_NAME = 'detik_reports') THEN
+				INSERT INTO all_reports (fkey, created_at, text, source, lang, url, image_url, title, the_geom) SELECT NEW.pkey, NEW.created_at, NEW.text, 'detik', NEW.url, NEW.image_url, NEW.title, NEW.the_geom;
+				RETURN NEW;
+			END IF;
+		END IF;
+	END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.update_reports()
+  OWNER TO _postgres;
+
 -- Table: tweet_reports
 -- DROP TABLE tweet_reports;
 
 -- Create table for Twitter reports
 CREATE TABLE tweet_reports
 (
-  pkey bigint,
+  pkey bigserial NOT NULL,
   database_time timestamp with time zone DEFAULT now(),
   created_at timestamp with time zone,
   text character varying,
   hashtags json,
-  urls character varying,
+  text_urls character varying,
   user_mentions json,
   lang character varying,
+  urls character varying,
   CONSTRAINT pkey_tweets PRIMARY KEY (pkey)
 )
 WITH (
@@ -29,6 +59,13 @@ SELECT AddGeometryColumn ('public','tweet_reports','the_geom',4326,'POINT',2);
 
 -- Add GIST spatial index
 CREATE INDEX gix_tweet_reports ON tweet_reports USING gist (the_geom);
+
+-- Update all_reports table
+CREATE TRIGGER updated_all_reports_from_tweets
+  BEFORE INSERT OR UPDATE
+  ON public.tweet_reports
+  FOR EACH ROW
+  EXECUTE PROCEDURE public.update_reports();
 
 -- Create table for Twitter report users
 CREATE TABLE tweet_users
@@ -145,10 +182,58 @@ END;
 $$
 LANGUAGE plpgsql;
 
+
+-- Create table for Detik reports
+CREATE TABLE detik_reports
+(
+  pkey bigserial NOT NULL,
+  database_time timestamp with time zone DEFAULT now(),
+  created_at timestamp with time zone,
+  text character varying,
+  hashtags json,
+  text_urls character varying,
+  user_mentions json,
+  lang character varying,
+  urls character varying,
+  CONSTRAINT pkey_detik PRIMARY KEY (pkey)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE detik_reports
+  OWNER TO postgres;
+
+-- Add Geometry column to tweet_reports
+SELECT AddGeometryColumn ('public','detik_reports','the_geom',4326,'POINT',2);
+
+-- Add GIST spatial index
+CREATE INDEX gix_detik_reports ON detik_reports USING gist (the_geom);
+
+CREATE TRIGGER updated_all_reports_from_detik
+  BEFORE INSERT OR UPDATE
+  ON public.detik_reports
+  FOR EACH ROW
+  EXECUTE PROCEDURE public.update_reports();
+
+-- Create table for Detik report users
+CREATE TABLE detik_users
+(
+  pkey bigserial,
+  user_hash character varying UNIQUE,
+  reports_count integer	,
+  CONSTRAINT pkey_detik_users PRIMARY KEY (pkey)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE detik_users
+  OWNER TO postgres;
+
 -- Create Table to store reports
 CREATE TABLE all_reports
 (
-  pkey bigserial,
+  pkey bigserial NOT NULL,
+  fkey bigint NOT NULL,
   database_time timestamp with time zone DEFAULT now(),
   created_at timestamp with time zone,
   text character varying NOT NULL,
@@ -157,12 +242,12 @@ CREATE TABLE all_reports
   url character varying,
   image_url character varying,
   title character varying,
-  CONSTRAINT pkey_tweets PRIMARY KEY (pkey)
+  CONSTRAINT all_tweets PRIMARY KEY (pkey)
 )
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE tweet_reports
+ALTER TABLE all_reports
   OWNER TO postgres;
 
 -- Add Geometry column to tweet_reports
@@ -170,18 +255,19 @@ SELECT AddGeometryColumn ('public','all_reports','the_geom',4326,'POINT',2);
 ALTER TABLE all_reports ALTER COLUMN the_geom SET NOT NULL;
 
 -- Add GIST spatial index
-CREATE INDEX gix_tweet_reports ON tweet_reports USING gist (the_geom);
+CREATE INDEX gix_all_reports ON all_reports USING gist (the_geom);
 
 -- Document the table
 COMMENT ON TABLE all_reports IS 'Reports from all input data sources';
 COMMENT ON COLUMN all_reports.pkey IS '{bigserial} [Primary Key] Unique key for each report';
+COMMENT ON COLUMN all_reports.fkey IS '{bigint} [Foreign Key] Unique key from source data table';
 COMMENT ON COLUMN all_reports.database_time IS '{timestamp with timezone} Time report written to table';
 COMMENT ON COLUMN all_reports.created_at IS '{timestamp with timezone} Time of report as recorded at data source';
 COMMENT ON COLUMN all_reports.text IS '{character varying} The text of the report';
 COMMENT ON COLUMN all_reports.source IS '{character varying} Data source of the report';
-COMMENT ON COLUMN all_repots.lang IS '{character varying | NULL} Language of report text in all_reports.text';
+COMMENT ON COLUMN all_reports.lang IS '{character varying | NULL} Language of report text in all_reports.text';
 COMMENT ON COLUMN all_reports.url IS '{character varying | NULL} URL link to report data source';
 COMMENT ON COLUMN all_reports.image_url IS '{character varying | NULL} URL link to report image';
 COMMENT ON COLUMN all_reports.title IS '{character varying | NULL} Short description of report';
-COMMENT ON COLUMN all_repots.the_geom IS '{geometry object} Point location for report using the WGS 1984 coordinate reference system';
+COMMENT ON COLUMN all_reports.the_geom IS '{geometry object} Point location for report using the WGS 1984 coordinate reference system';
 COMMENT ON INDEX gix_tweet_reports IS 'Generalized Search Tree Index on all_reports.the_geom';
