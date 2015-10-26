@@ -45,7 +45,8 @@ CREATE TABLE tweet_reports
   text_urls character varying,
   user_mentions json,
   lang character varying,
-  urls character varying,
+  text_urls character varying,
+  url character varying,
   CONSTRAINT pkey_tweets PRIMARY KEY (pkey)
 )
 WITH (
