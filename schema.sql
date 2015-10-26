@@ -20,7 +20,7 @@ $BODY$
 				INSERT INTO all_reports (fkey, created_at, text, source, lang, url, the_geom) SELECT NEW.pkey, NEW.created_at, NEW.text, 'twitter', NEW.lang, NEW.url, NEW.the_geom;
 				RETURN NEW;
 			ELSIF (TG_TABLE_NAME = 'detik_reports') THEN
-				INSERT INTO all_reports (fkey, created_at, text, source, lang, url, image_url, title, the_geom) SELECT NEW.pkey, NEW.created_at, NEW.text, 'detik', NEW.url, NEW.image_url, NEW.title, NEW.the_geom;
+				INSERT INTO all_reports (fkey, created_at, text, source, lang, url, image_url, title, the_geom) SELECT NEW.pkey, NEW.created_at, NEW.text, 'detik', NEW.lang, NEW.url, NEW.image_url, NEW.title, NEW.the_geom;
 				RETURN NEW;
 			END IF;
 		END IF;
@@ -45,7 +45,6 @@ CREATE TABLE tweet_reports
   text_urls character varying,
   user_mentions json,
   lang character varying,
-  text_urls character varying,
   url character varying,
   CONSTRAINT pkey_tweets PRIMARY KEY (pkey)
 )
@@ -191,11 +190,10 @@ CREATE TABLE detik_reports
   database_time timestamp with time zone DEFAULT now(),
   created_at timestamp with time zone,
   text character varying,
-  hashtags json,
-  text_urls character varying,
-  user_mentions json,
   lang character varying,
-  urls character varying,
+  url character varying,
+  image_url character varying,
+  title character varying,
   CONSTRAINT pkey_detik PRIMARY KEY (pkey)
 )
 WITH (
