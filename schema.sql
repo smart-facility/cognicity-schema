@@ -29,7 +29,7 @@ $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
 ALTER FUNCTION public.update_reports()
-  OWNER TO _postgres;
+  OWNER TO postgres;
 
 -- Table: tweet_reports
 -- DROP TABLE tweet_reports;
