@@ -131,32 +131,32 @@ CREATE TABLE nonspatial_tweet_users
 );
 
 -- Create a consolidated table for all users, regardless of data source
-CREATE TABLE all_users
+CREATE TABLE tweet_all_users
 (
  pkey bigserial,
  user_hash character varying UNIQUE,
- CONSTRAINT all_users_pkey PRIMARY KEY (pkey)
+ CONSTRAINT tweet_all_users_pkey PRIMARY KEY (pkey)
 );
 
-CREATE unique INDEX all_users_index ON all_users(user_hash);
+CREATE unique INDEX tweet_all_users_index ON tweet_all_users(user_hash);
 
--- Create a function to update all_users. Should be called by each data source table (e.g. tweet_reports)
-CREATE OR REPLACE FUNCTION update_all_users()
-  RETURNS trigger AS $update_all_users$
+-- Create a function to update tweet_all_users. Should be called by each data source table (e.g. tweet_reports)
+CREATE OR REPLACE FUNCTION update_tweet_all_users()
+  RETURNS trigger AS $update_tweet_all_users$
 
 	BEGIN
-		INSERT INTO all_users(user_hash) SELECT NEW.user_hash WHERE NOT EXISTS (SELECT user_hash FROM all_users WHERE user_hash = NEW.user_hash);
+		INSERT INTO tweet_all_users(user_hash) SELECT NEW.user_hash WHERE NOT EXISTS (SELECT user_hash FROM tweet_all_users WHERE user_hash = NEW.user_hash);
 		RETURN NEW;
 	END;
 
-$update_all_users$ LANGUAGE plpgsql;
+$update_tweet_all_users$ LANGUAGE plpgsql;
 
 CREATE TRIGGER non_spatial_all_users BEFORE INSERT OR UPDATE ON nonspatial_tweet_users
-	FOR EACH ROW EXECUTE PROCEDURE update_all_users();
+	FOR EACH ROW EXECUTE PROCEDURE update_tweet_all_users();
 CREATE TRIGGER tweet_invitees_all_users BEFORE INSERT OR UPDATE ON tweet_invitees
-	FOR EACH ROW EXECUTE PROCEDURE update_all_users();
+	FOR EACH ROW EXECUTE PROCEDURE update_tweet_all_users();
 CREATE TRIGGER tweet_users_all_users BEFORE INSERT OR UPDATE ON tweet_users
-	FOR EACH ROW EXECUTE PROCEDURE update_all_users();
+	FOR EACH ROW EXECUTE PROCEDURE update_tweet_all_users();
 
 --Function to update or insert tweet users
 CREATE FUNCTION upsert_tweet_users(hash varchar) RETURNS VOID AS
