@@ -54,15 +54,15 @@ The following tables are also included as samples of ancillary data used for map
 #### Restoring the schema
 1. Create an empty database, using `createdb.sql` for required properties
 2. Load the schema into the new database
-  ```shell
-  psql -d cognicity -f schema.sql
-  ```
+```shell
+psql -d cognicity -f schema.sql
+```
 3. Optionally, load the sample data:
-  ```shell
-  for datafile in sample_data/*.sql
-  do
-    psql -d cognicity -f $datafile
-  done
-  ```
+```shell
+for datafile in sample_data/*.sql
+do
+  psql -d cognicity -f $datafile
+done
+```
 ### License
 The schema is released under the GPLv3 License. See License.txt for details.
