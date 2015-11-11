@@ -3,32 +3,22 @@ CREATE EXTENSION postgis;
 CREATE EXTENSION postgis_topology;
 
 -- Create Trigger Function to update all_reports table
-CREATE OR REPLACE FUNCTION public.update_reports()
+CREATE OR REPLACE FUNCTION public.update_all_reports_from_tweets()
   RETURNS trigger AS
 $BODY$
 	BEGIN
 		IF (TG_OP = 'UPDATE') THEN
-			IF (TG_TABLE_NAME = 'tweet_reports') THEN
-				INSERT INTO all_reports (fkey, created_at, text, source, lang, url, the_geom) SELECT NEW.pkey, NEW.created_at, NEW.text, 'twitter', NEW.lang, NEW.url, NEW.the_geom;
-				RETURN NEW;
-			ELSIF (TG_TABLE_NAME = 'detik_reports') THEN
-				INSERT INTO all_reports (fkey, created_at, text, source, lang, url, image_url, title, the_geom) SELECT NEW.pkey, NEW.created_at, NEW.text, 'detik', NEW.url, NEW.image_url, NEW.title, NEW.the_geom;
-				RETURN NEW;
-			END IF;
+			INSERT INTO all_reports (fkey, created_at, text, source, lang, url, the_geom) SELECT NEW.pkey, NEW.created_at, NEW.text, 'twitter', NEW.lang, NEW.url, NEW.the_geom;
+			RETURN NEW;
 		ELSIF (TG_OP = 'INSERT') THEN
-			IF (TG_TABLE_NAME = 'tweet_reports') THEN
-				INSERT INTO all_reports (fkey, created_at, text, source, lang, url, the_geom) SELECT NEW.pkey, NEW.created_at, NEW.text, 'twitter', NEW.lang, NEW.url, NEW.the_geom;
-				RETURN NEW;
-			ELSIF (TG_TABLE_NAME = 'detik_reports') THEN
-				INSERT INTO all_reports (fkey, created_at, text, source, lang, url, image_url, title, the_geom) SELECT NEW.pkey, NEW.created_at, NEW.text, 'detik', NEW.lang, NEW.url, NEW.image_url, NEW.title, NEW.the_geom;
-				RETURN NEW;
-			END IF;
+			INSERT INTO all_reports (fkey, created_at, text, source, lang, url, the_geom) SELECT NEW.pkey, NEW.created_at, NEW.text, 'twitter', NEW.lang, NEW.url, NEW.the_geom;
+			RETURN NEW;
 		END IF;
 	END;
 $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
-ALTER FUNCTION public.update_reports()
+ALTER FUNCTION public.update_all_reports_from_tweets()
   OWNER TO postgres;
 
 -- Table: tweet_reports
@@ -61,11 +51,11 @@ SELECT AddGeometryColumn ('public','tweet_reports','the_geom',4326,'POINT',2);
 CREATE INDEX gix_tweet_reports ON tweet_reports USING gist (the_geom);
 
 -- Update all_reports table
-CREATE TRIGGER updated_all_reports_from_tweets
+CREATE TRIGGER trigger_update_all_reports_from_tweets
   BEFORE INSERT OR UPDATE
   ON public.tweet_reports
   FOR EACH ROW
-  EXECUTE PROCEDURE public.update_reports();
+  EXECUTE PROCEDURE public.update_all_reports_from_tweets();
 
 -- Create table for Twitter report users
 CREATE TABLE tweet_users
@@ -181,52 +171,6 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
-
-
--- Create table for Detik reports
-CREATE TABLE detik_reports
-(
-  pkey bigserial NOT NULL,
-  database_time timestamp with time zone DEFAULT now(),
-  created_at timestamp with time zone,
-  text character varying,
-  lang character varying,
-  url character varying,
-  image_url character varying,
-  title character varying,
-  CONSTRAINT pkey_detik PRIMARY KEY (pkey)
-)
-WITH (
-  OIDS=FALSE
-);
-ALTER TABLE detik_reports
-  OWNER TO postgres;
-
--- Add Geometry column to tweet_reports
-SELECT AddGeometryColumn ('public','detik_reports','the_geom',4326,'POINT',2);
-
--- Add GIST spatial index
-CREATE INDEX gix_detik_reports ON detik_reports USING gist (the_geom);
-
-CREATE TRIGGER updated_all_reports_from_detik
-  BEFORE INSERT OR UPDATE
-  ON public.detik_reports
-  FOR EACH ROW
-  EXECUTE PROCEDURE public.update_reports();
-
--- Create table for Detik report users
-CREATE TABLE detik_users
-(
-  pkey bigserial,
-  user_hash character varying UNIQUE,
-  reports_count integer	,
-  CONSTRAINT pkey_detik_users PRIMARY KEY (pkey)
-)
-WITH (
-  OIDS=FALSE
-);
-ALTER TABLE detik_users
-  OWNER TO postgres;
 
 -- Create Table to store reports
 CREATE TABLE all_reports
