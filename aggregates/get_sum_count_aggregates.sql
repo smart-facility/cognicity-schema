@@ -1,2 +1,0 @@
-﻿SELECT a.area_name as level_name, a.the_geom, b.count+c.count sum_count, b.start_time, b.end_time FROM jkt_rw_boundary a, rw_count_reports_confirmed b, rw_count_reports_unconfirmed c
-WHERE b.rw_pkey = a.pkey AND b.rw_pkey = c.rw_pkey AND b.end_time = '2014-02-13 02:00:00+11' AND c.end_time = '2014-02-13 02:00:00+11'
