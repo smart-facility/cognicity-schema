@@ -181,6 +181,7 @@ CREATE TABLE all_reports
   created_at timestamp with time zone,
   text character varying NOT NULL,
   source character varying NOT NULL,
+  status character varying DEFAULT 'confirmed',
   lang character varying,
   url character varying,
   image_url character varying,
@@ -208,6 +209,7 @@ COMMENT ON COLUMN all_reports.database_time IS '{timestamp with timezone} Time r
 COMMENT ON COLUMN all_reports.created_at IS '{timestamp with timezone} Time of report as recorded at data source';
 COMMENT ON COLUMN all_reports.text IS '{character varying} The text of the report';
 COMMENT ON COLUMN all_reports.source IS '{character varying} Data source of the report';
+COMMENT ON COLUMN all_reports.status IS '{character varying} Status of the report (defaults to confirmed)';
 COMMENT ON COLUMN all_reports.lang IS '{character varying | NULL} Language of report text in all_reports.text';
 COMMENT ON COLUMN all_reports.url IS '{character varying | NULL} URL link to report data source';
 COMMENT ON COLUMN all_reports.image_url IS '{character varying | NULL} URL link to report image';
