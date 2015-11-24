@@ -36,11 +36,13 @@ CREATE TABLE tweet_reports
   user_mentions json,
   lang character varying,
   url character varying,
+  tweet_id bigint,
   CONSTRAINT pkey_tweets PRIMARY KEY (pkey)
 )
 WITH (
   OIDS=FALSE
 );
+
 ALTER TABLE tweet_reports
   OWNER TO postgres;
 
