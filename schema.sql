@@ -198,6 +198,7 @@ ALTER TABLE all_reports
 
 -- Create table to store id of last seen tweet id as captured using GNIP
 CREATE TABLE seen_tweet_id (onerow_id bool PRIMARY KEY DEFAULT TRUE, id bigint, CONSTRAINT onerow_uni CHECK (onerow_ID));
+INSERT INTO seen_tweet_id VALUES (TRUE, 0);
 
 -- Add Geometry column to tweet_reports
 SELECT AddGeometryColumn ('public','all_reports','the_geom',4326,'POINT',2);
