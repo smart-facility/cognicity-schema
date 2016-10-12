@@ -54,7 +54,7 @@ The following tables are also included as samples of ancillary data used for map
 * The PostgreSQL database server must be running with a UTF-8 character set.
 
 #### Restoring the schema
-1. Create an empty database, using `createdb.sql` for required properties
+1. Create an empty database, using `createdb.sql` for required properties (NOTE: collation must be the same as the collation of your template DB en_US by default)
 2. Load the schema into the new database
 ```shell
 psql -d cognicity -f schema.sql
