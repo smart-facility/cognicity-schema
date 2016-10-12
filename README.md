@@ -61,7 +61,7 @@ psql -d cognicity -f schema.sql
 ```
 3. Optionally, load the sample data:
 ```shell
-for datafile in sample_data/*.sql
+for datafile in sample_data/*/*.sql
 do
   psql -d cognicity -f $datafile
 done
