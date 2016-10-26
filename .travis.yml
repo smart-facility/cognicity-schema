@@ -1,0 +1,5 @@
+sudo: false
+addons:
+  postgresql: "9.5"
+before_script: psql -U postgres -f createdb.sql
+script: psql -U postgres -f schema.sql
