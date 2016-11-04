@@ -49,7 +49,7 @@ CREATE INDEX gix_instance_regions ON cognicity.instance_regions USING gist (the_
 
 -- Local areas table (Indonesia = RWs)
 CREATE TABLE cognicity.local_areas(
-  pkey bigserial NOT NULL,
+  pkey bigint NOT NULL,
   name character varying,
   parent_name character varying,
   city character varying,
