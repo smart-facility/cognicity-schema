@@ -49,16 +49,17 @@ CREATE INDEX gix_instance_regions ON cognicity.instance_regions USING gist (the_
 
 -- Local areas table (Indonesia = RWs)
 CREATE TABLE cognicity.local_areas(
-  pkey bigint NOT NULL,
-  name character varying,
+  pkey bigserial NOT NULL,
+  geom_id bigint NOT NULL,
+  area_name character varying,
   parent_name character varying,
-  city character varying,
+  city_name character varying,
   instance_region_code character varying NOT NULL,
   CONSTRAINT local_area_pkey PRIMARY KEY (pkey)
 );
 
 -- Add Geometry column to local_areas
-SELECT AddGeometryColumn ('cognicity', 'local_areas', 'the_geom', 4326, 'POLYGON', 2);
+SELECT AddGeometryColumn ('cognicity', 'local_areas', 'the_geom', 4326, 'Geometry', 2);
 ALTER TABLE cognicity.local_areas ALTER COLUMN the_geom SET NOT NULL;
 
 -- Add a GIST spatial index
