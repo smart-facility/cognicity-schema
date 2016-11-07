@@ -50,7 +50,3 @@ describe ('CogniCity Schema Functions', function(){
     });
   });
 });
-
-describe ('Template Report Schema Functions', function(){
-  
-});
