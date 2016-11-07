@@ -67,7 +67,7 @@ describe ('Template Reports Schema Functions', function(){
   it ('Correctly pushes the report to all_reports table', function(done){
 
     var queryObject = {
-      text: "SELECT * FROM cognicity.all_reports WHERE fkey = $1;",
+      text: "SELECT * FROM cognicity.all_reports WHERE fkey = $1 AND source = 'data_source';",
       values: [ report_id ]
     };
 
@@ -101,11 +101,82 @@ describe ('Template Reports Schema Functions', function(){
       text: "DELETE FROM cognicity.all_reports WHERE pkey = $1;",
       values: [ report_key ]
     };
-    console.log(report_key);
     pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
       client.query(queryObject, function(err, result){
         pgDone();
         done();
+      });
+    });
+  });
+});
+
+var card_key, grasp_report_key, report_key;
+describe ('GRASP Reports Schema Functions', function(){
+
+  before ('Insert dummy data', function(done){
+
+    pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
+      client.query("INSERT INTO grasp.cards (card_id, username, network, language,  received) VALUES ('abcdefg', 'user', 'test network', 'en', True) RETURNING pkey", function(err, result){
+        card_key = result.rows[0].pkey;
+        pgDone();
+      });
+    });
+    pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
+      client.query("INSERT INTO grasp.reports (card_id, created_at, disaster_type, text,  card_data, image_id, status, the_geom) VALUES ('abcdefg', now(), 'flood', 'card text', '{}'::json, 1, 'confirmed', ST_GeomFromText('POINT(106.816667 -6.2)', 4326)) RETURNING pkey", function(err, result){
+        grasp_report_key = result.rows[0].pkey;
+        done();
+        pgDone();
+      });
+    });
+
+  });
+
+  it ('Correctly pushes the report to all_reports table', function(done){
+    var queryObject = {
+      text: "SELECT * FROM cognicity.all_reports WHERE fkey = $1 AND source = 'grasp';",
+      values: [ grasp_report_key ]
+    };
+
+    pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
+      client.query(queryObject, function(err, result){
+        test.value(err).is(null);
+        test.value(result.rows.length).is(1);
+        var resultObject = result.rows[0];
+        report_key = resultObject.pkey;
+        test.value(resultObject.disaster_type).is('flood');
+        test.value(resultObject.text).is('card text');
+        test.value(resultObject.lang).is('en');
+        test.value(resultObject.url).is('data.petabencana.id/abcdefg');
+        done();
+        pgDone();
+      });
+    });
+  });
+  after ('Remove dummy data', function(done){
+
+    var queryObject1 = {
+      text: "DELETE FROM grasp.reports WHERE pkey = $1;",
+      values: [ grasp_report_key ]
+    };
+
+    var queryObject2 = {
+      text: "DELETE FROM grasp.cards WHERE pkey = $1 ;",
+      values: [ card_key ]
+    };
+
+    var queryObject3 = {
+      text: "DELETE FROM cognicity.all_reports WHERE pkey = $1;",
+      values: [ report_key ]
+    };
+
+    pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
+      client.query(queryObject1, function(err, result){
+        client.query(queryObject2, function(err, result){
+          client.query(queryObject3, function(err, result){
+            pgDone();
+            done();
+          })
+        })
       });
     });
   });

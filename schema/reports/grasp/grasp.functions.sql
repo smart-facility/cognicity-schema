@@ -1,5 +1,5 @@
 -- Push grasp reports to CogniCity all reports
-CREATE OR REPLACE FUNCTION grasp.update_all_reports()
+CREATE OR REPLACE FUNCTION grasp.update_all_reports_from_grasp()
   RETURNS trigger AS
 $BODY$
 	BEGIN
@@ -18,29 +18,12 @@ $BODY$
 $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
-ALTER FUNCTION grasp.update_all_reports()
+ALTER FUNCTION grasp.update_all_reports_from_grasp()
   OWNER TO postgres;
 
 -- Update all_reports table
-CREATE TRIGGER trigger_update_all_reports
+CREATE TRIGGER trigger_update_all_reports_from_grasp
   BEFORE INSERT OR UPDATE
   ON grasp.reports
   FOR EACH ROW
-  EXECUTE PROCEDURE grasp.update_all_reports();
-
-
--- Notifications on grasp cards table updates
-CREATE FUNCTION grasp.notify_grasp_cards_trigger() RETURNS trigger AS $$
-DECLARE
-BEGIN
-  PERFORM pg_notify('watchers', '{"' || TG_TABLE_NAME || '":{"pkey":"' || NEW.pkey || '", "username": "'|| NEW.username ||'", "network": "' || NEW.network || '", "language": "'|| NEW.language ||'", "report_id": "' || NEW.report_id || '"}}' );
-  RETURN new;
-END;
-$$ LANGUAGE plpgsql;
-
--- Trigger for grasp card table updates
-CREATE TRIGGER watch_grasp_cards_trigger
-  AFTER UPDATE ON grasp.cards
-  FOR EACH ROW
-  WHEN (NEW.received = TRUE)
-  EXECUTE PROCEDURE grasp.notify_grasp_cards_trigger();
+  EXECUTE PROCEDURE grasp.update_all_reports_from_grasp();
