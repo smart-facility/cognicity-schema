@@ -1,0 +1,28 @@
+{
+  "name": "cognicity-schema-test",
+  "version": "0.0.1",
+  "description": "Unit tests for CogniCity schema",
+  "scripts": {
+    "mocha": "mocha testCognicitySchema.js",
+    "test": "npm run mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/urbanriskmap/cognicity-schema.git"
+  },
+  "keywords": [
+    "geosocial",
+    "cognicity"
+  ],
+  "author": "Tomas Holderness",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/urbanriskmap/cognicity-schema/issues"
+  },
+  "homepage": "https://github.com/urbanriskmap/cognicity-schema#readme",
+  "dependencies": {
+    "pg": "^6.1.0",
+    "mocha": "^3.0.2",
+    "unit.js": "^2.0.0"
+  }
+}

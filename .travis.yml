@@ -1,6 +1,7 @@
 sudo: false
+language: node_js
 addons:
   postgresql: "9.4"
 services: postgresql
-before_script: cd ./build
-script: bash ./run.sh
+before_script: cd ./build && bash ./run.sh
+script: cd ../test && npm install && npm test
