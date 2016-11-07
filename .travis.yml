@@ -2,5 +2,5 @@ sudo: false
 addons:
   postgresql: "9.4"
 services: postgresql
-before_script: psql -U postgres -f createdb.sql
-script: psql -U postgres -d cognicity -f schema.sql
+before_script: cd ./build
+script: bash ./run.sh

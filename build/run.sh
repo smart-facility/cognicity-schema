@@ -2,7 +2,7 @@
 # Config
 HOST='localhost'
 USERNAME='postgres'
-DATABASE='cognicity' # Note:- If you use createdb you'll need to adjust the name
+DATABASE='cognicity' # Note: If you change this name don't forget to change it in the cognicity.createdb.sql file below
 
 # Create db (optional)
 psql -h $HOST -U $USERNAME -f ./cognicity.createdb.sql
@@ -18,3 +18,14 @@ psql -h $HOST -U $USERNAME -d $DATABASE -f ../data/cognicity/instance_regions.da
 
 # Load instance data - local areas
 psql -h $HOST -U $USERNAME -d $DATABASE -f ../data/cognicity/local_areas.data.sql
+
+# Load reports template schema & functions
+psql -h $HOST -U $USERNAME -d $DATABASE -f ../schema/reports/template/template.schema.sql
+psql -h $HOST -U $USERNAME -d $DATABASE -f ../schema/reports/template/template.functions.sql
+
+# Load the twitter (grasp version) reports schema
+psql -h $HOST -U $USERNAME -d $DATABASE -f ../schema/reports/twitter/twitter.schema.sql
+
+# Load the grasp reports schema & functions
+psql -h $HOST -U $USERNAME -d $DATABASE -f ../schema/reports/grasp/grasp.schema.sql
+psql -h $HOST -U $USERNAME -d $DATABASE -f ../schema/reports/grasp/grasp.functions.sql
