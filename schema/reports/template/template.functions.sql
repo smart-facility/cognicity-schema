@@ -1,5 +1,5 @@
 -- Create Trigger Function to update all_reports table
-CREATE OR REPLACE FUNCTION template.update_all_reports()
+CREATE OR REPLACE FUNCTION template_data_source.update_all_reports()
   RETURNS trigger AS
 $BODY$
 	BEGIN
@@ -14,12 +14,12 @@ $BODY$
 $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
-ALTER FUNCTION template.update_all_reports()
+ALTER FUNCTION template_data_source.update_all_reports()
   OWNER TO postgres;
 
 -- Update all_reports table
 CREATE TRIGGER trigger_update_all_reports
   BEFORE INSERT OR UPDATE
-  ON template.reports
+  ON template_data_source.reports
   FOR EACH ROW
-  EXECUTE PROCEDURE template.update_all_reports();
+  EXECUTE PROCEDURE template_data_source.update_all_reports();
