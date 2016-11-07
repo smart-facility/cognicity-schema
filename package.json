@@ -1,9 +1,9 @@
 {
-  "name": "cognicity-schema-test",
+  "name": "cognicity-schema",
   "version": "0.0.1",
-  "description": "Unit tests for CogniCity schema",
+  "description": "Cognicity Database Schema",
   "scripts": {
-    "mocha": "mocha testCognicitySchema.js",
+    "mocha": "mocha test",
     "test": "npm run mocha"
   },
   "repository": {
