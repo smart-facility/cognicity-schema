@@ -1,2 +1,4 @@
 1.0_dev/
 backups/
+node_modules/
+.DS_Store
