@@ -299,3 +299,50 @@ describe ('CogniCity Schema Functions', function(){
     });
   });
 });
+
+describe ('Floodgauge Schema Functions', function(){
+
+  var reportid;
+  before ('Insert dummy data', function(done){
+    pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
+      client.query("INSERT INTO floodgauge.reports (gaugeID, measureDateTime, depth, deviceID, reportType, level, notificationFlag, gaugeNameId, gaugeNameEn, gaugeNameJp, warningLevel, warningNameId, warningNameEn, warningNameJp, observation_comment, the_geom) VALUES ('1', now(), 100, '1', 'confirmed', '100', 0, 'gauge', 'gauge', 'gauge', 4, 'warningname', 'warningname', 'warningname', 'comment', ST_GeomFromText('POINT(106.816667 -6.2)', 4326)) RETURNING pkey", function(err, result){
+        reportid = result.rows[0].pkey;
+        done();
+        pgDone();
+      });
+    });
+  });
+
+  it ('Correctly defines report regions', function(done){
+
+    var queryObject = {
+      text: "SELECT * FROM floodgauge.reports WHERE pkey = $1;",
+      values: [ reportid ]
+    };
+
+    pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
+      client.query(queryObject, function(err, result){
+        test.value(err).is(null);
+        test.value(result.rows.length).is(1);
+        var resultObject = result.rows[0];
+        test.value(resultObject.tags.instance_region_code).is('jbd');
+        test.value(resultObject.tags.local_area_id).is('800');
+        done();
+        pgDone();
+      });
+    });
+  });
+
+  after ('Remove dummy data', function(done){
+    var queryObject = {
+      text: "DELETE FROM cognicity.all_reports WHERE pkey = $1;",
+      values: [ reportid ]
+    };
+    pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
+      client.query(queryObject, function(err, result){
+        done();
+        pgDone();
+      });
+    });
+  });
+});

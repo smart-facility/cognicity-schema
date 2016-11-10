@@ -37,3 +37,7 @@ psql -h $HOST -U $USERNAME -d $DATABASE -f ./schema/reports/detik/detik.function
 # Load the qlue reports schema & functions
 psql -h $HOST -U $USERNAME -d $DATABASE -f ./schema/reports/qlue/qlue.schema.sql
 psql -h $HOST -U $USERNAME -d $DATABASE -f ./schema/reports/qlue/qlue.functions.sql
+
+# Load the floodgauge reports schema & functions
+psql -h $HOST -U $USERNAME -d $DATABASE -f ./schema/reports/floodgauge/floodgauge.schema.sql
+psql -h $HOST -U $USERNAME -d $DATABASE -f ./schema/reports/floodgauge/floodgauge.functions.sql
