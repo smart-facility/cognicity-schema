@@ -29,7 +29,7 @@ CREATE TABLE grasp.reports (
 );
 
 --Table grasp_report_images
-CREATE TABLE grasp.report_images (
+CREATE TABLE grasp.images (
   pkey bigserial NOT NULL,
   card_id varchar NOT NULL,
   image_id bigint,
