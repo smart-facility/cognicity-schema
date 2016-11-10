@@ -29,3 +29,7 @@ psql -h $HOST -U $USERNAME -d $DATABASE -f ./schema/reports/twitter/twitter.sche
 # Load the grasp reports schema & functions
 psql -h $HOST -U $USERNAME -d $DATABASE -f ./schema/reports/grasp/grasp.schema.sql
 psql -h $HOST -U $USERNAME -d $DATABASE -f ./schema/reports/grasp/grasp.functions.sql
+
+# Load the detik reports schema & functions
+psql -h $HOST -U $USERNAME -d $DATABASE -f ./schema/reports/detik/detik.schema.sql
+psql -h $HOST -U $USERNAME -d $DATABASE -f ./schema/reports/detik/detik.functions.sql
