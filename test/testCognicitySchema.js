@@ -49,136 +49,194 @@ describe ('CogniCity Schema Functions', function(){
       });
     });
   });
-});
+  var report_id, report_key;
+  describe ('Template Reports Schema Functions', function(){
 
-var report_id, report_key;
-describe ('Template Reports Schema Functions', function(){
+    before ('Insert dummy data', function(done){
+      pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
+        client.query("INSERT INTO template_data_source.reports (created_at, disaster_type, text,  lang, url, the_geom) VALUES (now(), 'flood', 'report text', 'en', 'no_url', ST_GeomFromText('POINT(106.816667 -6.2)', 4326)) RETURNING pkey", function(err, result){
+          report_id = result.rows[0].pkey;
+          done();
+          pgDone();
+        });
+      });
+    });
 
-  before ('Insert dummy data', function(done){
-    pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
-      client.query("INSERT INTO template_data_source.reports (created_at, disaster_type, text,  lang, url, the_geom) VALUES (now(), 'flood', 'report text', 'en', 'no_url', ST_GeomFromText('POINT(106.816667 -6.2)', 4326)) RETURNING pkey", function(err, result){
-        report_id = result.rows[0].pkey;
-        done();
-        pgDone();
+    it ('Correctly pushes the report to all_reports table', function(done){
+
+      var queryObject = {
+        text: "SELECT * FROM cognicity.all_reports WHERE fkey = $1 AND source = 'data_source';",
+        values: [ report_id ]
+      };
+
+      pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
+        client.query(queryObject, function(err, result){
+          test.value(err).is(null);
+          test.value(result.rows.length).is(1);
+          var resultObject = result.rows[0];
+          report_key = resultObject.pkey;
+          test.value(resultObject.disaster_type).is('flood');
+          test.value(resultObject.text).is('report text');
+          test.value(resultObject.lang).is('en');
+          test.value(resultObject.url).is('no_url');
+          done();
+          pgDone();
+        });
+      });
+    });
+
+    after ('Remove dummy data', function(done){
+      var queryObject = {
+        text: "DELETE FROM template_data_source.reports WHERE pkey = $1;",
+        values: [ report_id ]
+      };
+      pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
+        client.query(queryObject, function(err, result){
+          pgDone();
+        });
+      });
+      queryObject = {
+        text: "DELETE FROM cognicity.all_reports WHERE pkey = $1;",
+        values: [ report_key ]
+      };
+      pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
+        client.query(queryObject, function(err, result){
+          pgDone();
+          done();
+        });
       });
     });
   });
 
-  it ('Correctly pushes the report to all_reports table', function(done){
+  var card_key, grasp_report_key, report_key;
+  describe ('GRASP Reports Schema Functions', function(){
 
-    var queryObject = {
-      text: "SELECT * FROM cognicity.all_reports WHERE fkey = $1 AND source = 'data_source';",
-      values: [ report_id ]
-    };
+    before ('Insert dummy data', function(done){
 
-    pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
-      client.query(queryObject, function(err, result){
-        test.value(err).is(null);
-        test.value(result.rows.length).is(1);
-        var resultObject = result.rows[0];
-        report_key = resultObject.pkey;
-        test.value(resultObject.disaster_type).is('flood');
-        test.value(resultObject.text).is('report text');
-        test.value(resultObject.lang).is('en');
-        test.value(resultObject.url).is('no_url');
-        done();
-        pgDone();
+      pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
+        client.query("INSERT INTO grasp.cards (card_id, username, network, language, received) VALUES ('abcdefg', 'user', 'test network', 'en', True) RETURNING pkey", function(err, result){
+          card_key = result.rows[0].pkey;
+          pgDone();
+        });
       });
-    });
-  });
-
-  after ('Remove dummy data', function(done){
-    var queryObject = {
-      text: "DELETE FROM template_data_source.reports WHERE pkey = $1;",
-      values: [ report_id ]
-    };
-    pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
-      client.query(queryObject, function(err, result){
-        pgDone();
+      pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
+        var properties = {flood_depth:100};
+        client.query({text: "INSERT INTO grasp.reports (card_id, created_at, disaster_type, text, card_data, image_id, status, the_geom) VALUES ('abcdefg', now(), 'flood', 'card text', $1, 1, 'confirmed', ST_GeomFromText('POINT(106.816667 -6.2)', 4326)) RETURNING pkey", values:[properties]}, function(err, result){
+          grasp_report_key = result.rows[0].pkey;
+          done();
+          pgDone();
+        });
       });
-    });
-    queryObject = {
-      text: "DELETE FROM cognicity.all_reports WHERE pkey = $1;",
-      values: [ report_key ]
-    };
-    pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
-      client.query(queryObject, function(err, result){
-        pgDone();
-        done();
-      });
-    });
-  });
-});
 
-var card_key, grasp_report_key, report_key;
-describe ('GRASP Reports Schema Functions', function(){
-
-  before ('Insert dummy data', function(done){
-
-    pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
-      client.query("INSERT INTO grasp.cards (card_id, username, network, language, received) VALUES ('abcdefg', 'user', 'test network', 'en', True) RETURNING pkey", function(err, result){
-        card_key = result.rows[0].pkey;
-        pgDone();
-      });
-    });
-    pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
-      var properties = {flood_depth:100};
-      client.query({text: "INSERT INTO grasp.reports (card_id, created_at, disaster_type, text, card_data, image_id, status, the_geom) VALUES ('abcdefg', now(), 'flood', 'card text', $1, 1, 'confirmed', ST_GeomFromText('POINT(106.816667 -6.2)', 4326)) RETURNING pkey", values:[properties]}, function(err, result){
-        grasp_report_key = result.rows[0].pkey;
-        done();
-        pgDone();
-      });
     });
 
-  });
+    it ('Correctly pushes the report to all_reports table', function(done){
+      var queryObject = {
+        text: "SELECT * FROM cognicity.all_reports WHERE fkey = $1 AND source = 'grasp';",
+        values: [ grasp_report_key ]
+      };
 
-  it ('Correctly pushes the report to all_reports table', function(done){
-    var queryObject = {
-      text: "SELECT * FROM cognicity.all_reports WHERE fkey = $1 AND source = 'grasp';",
-      values: [ grasp_report_key ]
-    };
-
-    pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
-      client.query(queryObject, function(err, result){
-        test.value(err).is(null);
-        test.value(result.rows.length).is(1);
-        var resultObject = result.rows[0];
-        report_key = resultObject.pkey;
-        test.value(resultObject.disaster_type).is('flood');
-        test.value(resultObject.text).is('card text');
-        test.value(resultObject.lang).is('en');
-        test.value(resultObject.properties.flood_depth).is(100);
-        test.value(resultObject.url).is('data.petabencana.id/abcdefg');
-        done();
-        pgDone();
+      pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
+        client.query(queryObject, function(err, result){
+          test.value(err).is(null);
+          test.value(result.rows.length).is(1);
+          var resultObject = result.rows[0];
+          report_key = resultObject.pkey;
+          test.value(resultObject.disaster_type).is('flood');
+          test.value(resultObject.text).is('card text');
+          test.value(resultObject.lang).is('en');
+          test.value(resultObject.properties.flood_depth).is(100);
+          test.value(resultObject.url).is('data.petabencana.id/abcdefg');
+          done();
+          pgDone();
+        });
       });
     });
-  });
-  after ('Remove dummy data', function(done){
+    after ('Remove dummy data', function(done){
 
-    var queryObject1 = {
-      text: "DELETE FROM grasp.reports WHERE pkey = $1;",
-      values: [ grasp_report_key ]
-    };
+      var queryObject1 = {
+        text: "DELETE FROM grasp.reports WHERE pkey = $1;",
+        values: [ grasp_report_key ]
+      };
 
-    var queryObject2 = {
-      text: "DELETE FROM grasp.cards WHERE pkey = $1 ;",
-      values: [ card_key ]
-    };
+      var queryObject2 = {
+        text: "DELETE FROM grasp.cards WHERE pkey = $1 ;",
+        values: [ card_key ]
+      };
 
-    var queryObject3 = {
-      text: "DELETE FROM cognicity.all_reports WHERE pkey = $1;",
-      values: [ report_key ]
-    };
+      var queryObject3 = {
+        text: "DELETE FROM cognicity.all_reports WHERE pkey = $1;",
+        values: [ report_key ]
+      };
 
-    pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
-      client.query(queryObject1, function(err, result){
-        client.query(queryObject2, function(err, result){
-          client.query(queryObject3, function(err, result){
-            pgDone();
-            done();
+      pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
+        client.query(queryObject1, function(err, result){
+          client.query(queryObject2, function(err, result){
+            client.query(queryObject3, function(err, result){
+              pgDone();
+              done();
+            })
           })
-        })
+        });
+      });
+    });
+  });
+  // Detik tests
+  var report_id, report_key;
+  describe ('Detik Reports Schema Functions', function(){
+
+    before ('Insert dummy data', function(done){
+      pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
+        client.query("INSERT INTO detik.reports (contribution_id, created_at, disaster_type, text,  lang, url, image_url, title, the_geom) VALUES (9999, now(), 'flood', 'report text', 'en', 'no_url', 'no_image', 'title', ST_GeomFromText('POINT(106.816667 -6.2)', 4326)) RETURNING pkey", function(err, result){
+          report_id = result.rows[0].pkey;
+          done();
+          pgDone();
+        });
+      });
+    });
+
+    it ('Correctly pushes the report to all_reports table', function(done){
+
+      var queryObject = {
+        text: "SELECT * FROM cognicity.all_reports WHERE fkey = $1 AND source = 'detik';",
+        values: [ report_id ]
+      };
+
+      pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
+        client.query(queryObject, function(err, result){
+          test.value(err).is(null);
+          test.value(result.rows.length).is(1);
+          var resultObject = result.rows[0];
+          report_key = resultObject.pkey;
+          test.value(resultObject.disaster_type).is('flood');
+          test.value(resultObject.text).is('report text');
+          test.value(resultObject.lang).is('en');
+          test.value(resultObject.url).is('no_url');
+          done();
+          pgDone();
+        });
+      });
+    });
+
+    after ('Remove dummy data', function(done){
+      var queryObject = {
+        text: "DELETE FROM detik.reports WHERE pkey = $1;",
+        values: [ report_id ]
+      };
+      pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
+        client.query(queryObject, function(err, result){
+          pgDone();
+        });
+      });
+      queryObject = {
+        text: "DELETE FROM cognicity.all_reports WHERE pkey = $1;",
+        values: [ report_key ]
+      };
+      pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
+        client.query(queryObject, function(err, result){
+          pgDone();
+          done();
+        });
       });
     });
   });
