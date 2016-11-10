@@ -33,3 +33,7 @@ psql -h $HOST -U $USERNAME -d $DATABASE -f ./schema/reports/grasp/grasp.function
 # Load the detik reports schema & functions
 psql -h $HOST -U $USERNAME -d $DATABASE -f ./schema/reports/detik/detik.schema.sql
 psql -h $HOST -U $USERNAME -d $DATABASE -f ./schema/reports/detik/detik.functions.sql
+
+# Load the qlue reports schema & functions
+psql -h $HOST -U $USERNAME -d $DATABASE -f ./schema/reports/qlue/qlue.schema.sql
+psql -h $HOST -U $USERNAME -d $DATABASE -f ./schema/reports/qlue/qlue.functions.sql
