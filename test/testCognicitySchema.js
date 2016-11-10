@@ -335,7 +335,7 @@ describe ('Floodgauge Schema Functions', function(){
 
   after ('Remove dummy data', function(done){
     var queryObject = {
-      text: "DELETE FROM cognicity.all_reports WHERE pkey = $1;",
+      text: "DELETE FROM floodgauge.reports WHERE pkey = $1;",
       values: [ reportid ]
     };
     pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
