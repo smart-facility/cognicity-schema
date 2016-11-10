@@ -5,8 +5,8 @@ CREATE OR REPLACE FUNCTION cognicity.define_report_region()
 $BODY$
 	BEGIN
 	UPDATE cognicity.all_reports
-        SET tags = ('{"instance_region_code":"' || (SELECT code FROM cognicity.instance_regions AS i WHERE ST_WITHIN(NEW.the_geom, i.the_geom)) || '","local_area_id":"' || (SELECT pkey FROM cognicity.local_areas AS l WHERE ST_WITHIN(NEW.the_geom, l.the_geom))  || '"}')::json
-        WHERE pkey = NEW.pkey;
+    SET tags = (SELECT '{"instance_region_code":"' || COALESCE(code.code, 'null') || '", '|| '"local_area_id":"' || COALESCE(la.pkey::varchar, 'null') ||'"}' FROM (SELECT (SELECT code FROM cognicity.instance_regions AS i WHERE ST_WITHIN(NEW.the_geom, i.the_geom))) AS code, (SELECT (SELECT pkey FROM cognicity.local_areas as j WHERE ST_WITHIN(NEW.the_geom, j.the_geom))) AS la)::json
+    WHERE pkey = NEW.pkey;
 	RETURN NEW;
 	END;
 $BODY$
