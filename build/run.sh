@@ -41,3 +41,9 @@ psql -h $HOST -U $USERNAME -d $DATABASE -f ./schema/reports/qlue/qlue.functions.
 # Load the floodgauge reports schema & functions
 psql -h $HOST -U $USERNAME -d $DATABASE -f ./schema/reports/floodgauge/floodgauge.schema.sql
 psql -h $HOST -U $USERNAME -d $DATABASE -f ./schema/reports/floodgauge/floodgauge.functions.sql
+
+# Load the pumps, floodgates and waterways infrastructure schema data
+psql -h $HOST -U $USERNAME -d $DATABASE -f ./schema/infrastructure/infrastructure.schema.sql
+psql -h $HOST -U $USERNAME -d $DATABASE -f ./data/infrastructure/floodgates.data.sql
+psql -h $HOST -U $USERNAME -d $DATABASE -f ./data/infrastructure/pumps.data.sql
+psql -h $HOST -U $USERNAME -d $DATABASE -f ./data/infrastructure/waterways.data.sql
