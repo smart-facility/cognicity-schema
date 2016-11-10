@@ -145,7 +145,7 @@ describe ('CogniCity Schema Functions', function(){
           test.value(resultObject.disaster_type).is('flood');
           test.value(resultObject.text).is('card text');
           test.value(resultObject.lang).is('en');
-          test.value(resultObject.properties.flood_depth).is(100);
+          test.value(resultObject.report_data.flood_depth).is(100);
           test.value(resultObject.url).is('data.petabencana.id/abcdefg');
           done();
           pgDone();

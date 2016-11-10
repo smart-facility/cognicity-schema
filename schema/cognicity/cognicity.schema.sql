@@ -20,7 +20,7 @@ CREATE TABLE cognicity.all_reports
   url character varying,
   image_url character varying,
   title character varying,
-  properties json,
+  report_data json,
   tags json,
   CONSTRAINT all_reports_pkey PRIMARY KEY (pkey)
 );
