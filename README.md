@@ -3,6 +3,7 @@ CogniCity
 **Open Source GeoSocial Intelligence Framework**
 
 #### cognicity-schema: PostgreSQL/PostGIS Schema for CogniCity data.
+[![Build Status](https://travis-ci.org/urbanriskmap/cognicity-schema.svg?branch=master)](https://travis-ci.org/urbanriskmap/cognicity-schema)
 
 DOI for current stable release [v2.0.0](https://github.com/smart-facility/cognicity-schema/releases/tag/v2.0.0): [![DOI](https://zenodo.org/badge/19201/smart-facility/cognicity-schema.svg)](https://zenodo.org/badge/latestdoi/19201/smart-facility/cognicity-schema)
 
