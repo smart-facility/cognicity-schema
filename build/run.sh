@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Config
-HOST='localhost'
-USERNAME='postgres'
-DATABASE='cognicity' # Note: If you change this name don't forget to change it in the cognicity.createdb.sql file below
+HOST=${HOST:-'localhost'}
+USERNAME=${USERNAME:-'postgres'}
+DATABASE=${DATABASE:-'cognicity'} # Note: If you change this name don't forget to change it in the cognicity.createdb.sql file below
 
 # Create db (optional)
-psql -h $HOST -U $USERNAME -f ./build/cognicity.createdb.sql
+psql -h $HOST -U $USERNAME -d postgres -T template0 -f ./build/cognicity.createdb.sql
 
 # Load schema
 psql -h $HOST -U $USERNAME -d $DATABASE -f ./schema/cognicity/cognicity.schema.sql
