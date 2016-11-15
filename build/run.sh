@@ -47,3 +47,6 @@ psql -h $HOST -U $USERNAME -d $DATABASE -f ./schema/infrastructure/infrastructur
 psql -h $HOST -U $USERNAME -d $DATABASE -f ./data/infrastructure/floodgates.data.sql
 psql -h $HOST -U $USERNAME -d $DATABASE -f ./data/infrastructure/pumps.data.sql
 psql -h $HOST -U $USERNAME -d $DATABASE -f ./data/infrastructure/waterways.data.sql
+
+# Load sensor schema
+psql -h $HOST -U $USERNAME -d $DATABASE -f ./schema/sensors/watersensor.schema.sql
