@@ -13,6 +13,7 @@ CREATE TABLE qlue.reports
   lang character varying,
   image_url character varying,
   title character varying,
+  qlue_city character varying NOT NULL,
   CONSTRAINT pkey_qlue PRIMARY KEY (pkey)
 );
 

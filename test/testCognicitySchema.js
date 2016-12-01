@@ -246,7 +246,7 @@ describe ('CogniCity Schema Functions', function(){
 
     before ('Insert dummy data', function(done){
       pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
-        client.query("INSERT INTO qlue.reports (post_id, created_at, disaster_type, text, lang, image_url, title, the_geom) VALUES (9999, now(), 'flood', 'report text', 'en', 'no_image', 'title', ST_GeomFromText('POINT(106.816667 -6.2)', 4326)) RETURNING pkey", function(err, result){
+        client.query("INSERT INTO qlue.reports (post_id, created_at, disaster_type, text, lang, image_url, title, qlue_city, the_geom) VALUES (9999, now(), 'flood', 'report text', 'en', 'no_image', 'title', 'jabodetabek', ST_GeomFromText('POINT(106.816667 -6.2)', 4326)) RETURNING pkey", function(err, result){
           report_id = result.rows[0].pkey;
           done();
           pgDone();
