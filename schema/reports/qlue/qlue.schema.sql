@@ -5,7 +5,7 @@ CREATE schema qlue;
 CREATE TABLE qlue.reports
 (
   pkey bigserial NOT NULL,
-  post_id bigint NOT NULL,
+  post_id bigint NOT NULL UNIQUE,
   database_time timestamp with time zone DEFAULT now(),
   created_at timestamp with time zone,
   disaster_type character varying NOT NULL,
@@ -22,12 +22,3 @@ SELECT AddGeometryColumn ('qlue','reports','the_geom',4326,'POINT',2);
 
 -- Add GIST spatial index
 CREATE INDEX gix_qlue_reports ON qlue.reports USING gist (the_geom);
-
--- Create table for Qlue report users
-CREATE TABLE qlue.users
-(
-  pkey bigserial,
-  user_hash character varying UNIQUE,
-  reports_count integer,
-  CONSTRAINT pkey_qlue_users PRIMARY KEY (pkey)
-);
