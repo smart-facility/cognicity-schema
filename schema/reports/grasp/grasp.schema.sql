@@ -22,20 +22,10 @@ CREATE TABLE grasp.reports (
   disaster_type varchar NOT NULL,
   text varchar,
   card_data json,
-  image_id bigint,
+  image_url varchar,
   status varchar,
   the_geom geometry(Point, 4326),
   CONSTRAINT pkey_grasp_reports PRIMARY KEY (pkey)
-);
-
---Table grasp_report_images
-CREATE TABLE grasp.images (
-  pkey bigserial NOT NULL,
-  card_id varchar NOT NULL,
-  image_id bigint,
-  filename varchar,
-  url_path varchar,
-  CONSTRAINT pkey_grasp_report_images PRIMARY KEY (pkey)
 );
 
 --Table grasp_log

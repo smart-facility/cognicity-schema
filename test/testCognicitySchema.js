@@ -121,7 +121,7 @@ describe ('CogniCity Schema Functions', function(){
       });
       pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
         var properties = {flood_depth:100};
-        client.query({text: "INSERT INTO grasp.reports (card_id, created_at, disaster_type, text, card_data, image_id, status, the_geom) VALUES ('abcdefg', now(), 'flood', 'card text', $1, 1, 'confirmed', ST_GeomFromText('POINT(106.816667 -6.2)', 4326)) RETURNING pkey", values:[properties]}, function(err, result){
+        client.query({text: "INSERT INTO grasp.reports (card_id, created_at, disaster_type, text, card_data, image_url, status, the_geom) VALUES ('abcdefg', now(), 'flood', 'card text', $1, 'no_url', 'confirmed', ST_GeomFromText('POINT(106.816667 -6.2)', 4326)) RETURNING pkey", values:[properties]}, function(err, result){
           grasp_report_key = result.rows[0].pkey;
           done();
           pgDone();
