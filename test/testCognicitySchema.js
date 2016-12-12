@@ -146,7 +146,7 @@ describe ('CogniCity Schema Functions', function(){
           test.value(resultObject.text).is('card text');
           test.value(resultObject.lang).is('en');
           test.value(resultObject.report_data.flood_depth).is(100);
-          test.value(resultObject.url).is('data.petabencana.id/abcdefg');
+          test.value(resultObject.url).is('data.petabencana.id/cards/abcdefg');
           done();
           pgDone();
         });
