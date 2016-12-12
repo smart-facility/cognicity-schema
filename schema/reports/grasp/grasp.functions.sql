@@ -29,3 +29,21 @@ CREATE TRIGGER trigger_update_all_reports_from_grasp
   ON grasp.reports
   FOR EACH ROW
   EXECUTE PROCEDURE grasp.update_all_reports_from_grasp();
+
+--Notifications on  grasp cards table updates
+CREATE OR REPLACE FUNCTION grasp.notify_grasp_cards_trigger() RETURNS trigger AS $$
+DECLARE
+report_id BIGINT;
+report_area VARCHAR;
+BEGIN
+  SELECT into report_id, report_area c.PKEY, c.tags->>'instance_region_code' FROM cognicity.all_reports c, grasp.reports g WHERE c.fkey = g.pkey AND c.source = 'grasp' AND g.card_id = NEW.card_id;
+  PERFORM pg_notify('watchers', '{"' || TG_TABLE_NAME || '":{"pkey":"' || NEW.pkey || '", "username": "'|| NEW.username ||'", "network": "' || NEW.network || '", "language": "'|| NEW.language ||'", "report_id": "' || report_id ||'", "report_impl_area": "' || report_area || '"}}' );
+  RETURN new;
+END;
+$$ LANGUAGE plpgsql;
+    
+CREATE TRIGGER watch_grasp_cards_trigger
+  AFTER UPDATE ON grasp.cards
+  FOR EACH ROW
+  WHEN (NEW.received = TRUE)
+  EXECUTE PROCEDURE grasp.notify_grasp_cards_trigger();

@@ -152,6 +152,35 @@ describe ('CogniCity Schema Functions', function(){
         });
       });
     });
+
+    it ('Correctly issues a notify when card received status is set to true', function(done){
+      var queryObject = {
+        text: "UPDATE grasp.cards SET received = $1 WHERE card_id = 'abcdefg';",
+        values: [ true ]
+      };
+
+      pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
+        client.on('notification', function(msg){
+          // Get a pg notify object, parse and test known values
+          var result = JSON.parse(msg.payload);
+          test.value(result.cards.username).is('user');
+          test.value(result.cards.network).is('test network');
+          test.value(result.cards.language).is('en');
+          test.value(result.cards.report_impl_area).is('jbd');
+          done();
+          pgDone();
+        });
+      client.query("LISTEN watchers");
+      });
+
+      pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
+        // Update cards table to trigger pg notify (see above)
+        client.query(queryObject, function(err, result){
+          pgDone();
+        });
+      });
+    });
+
     after ('Remove dummy data', function(done){
 
       var queryObject1 = {
