@@ -112,7 +112,6 @@ describe ('CogniCity Schema Functions', function(){
   describe ('GRASP Reports Schema Functions', function(){
 
     before ('Insert dummy data', function(done){
-
       pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
         client.query("INSERT INTO grasp.cards (card_id, username, network, language, received) VALUES ('abcdefg', 'user', 'test network', 'en', True) RETURNING pkey",
         function(err, result){
@@ -120,21 +119,21 @@ describe ('CogniCity Schema Functions', function(){
           pgDone();
         });
       });
+
       pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
-        var properties = {flood_depth:100};
+        var properties = JSON.stringify({flood_depth:100});
         client.query({text: "INSERT INTO grasp.reports (card_id, created_at, disaster_type, text, card_data, image_url, status, the_geom) VALUES ('abcdefg', now(), 'flood', 'card text', $1, 'no_url', 'confirmed', ST_GeomFromText('POINT(106.816667 -6.2)', 4326)) RETURNING pkey", values:[properties]}, function(err, result){
           grasp_report_key = result.rows[0].pkey;
-          done();
           pgDone();
+          pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
+            client.query({text: "UPDATE grasp.reports SET image_url = 'test_image_url' WHERE pkey = $1", values:[grasp_report_key]}, function(err, result){
+              done();
+              pgDone();
+            });
+          });
         });
       });
-      pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
-        client.query("UPDATE grasp.reports SET image_url = 'test_image_url' WHERE pkey = grasp_report_key", function(err, result){
-          done();
-          pgDone();
-        });
-      });
-    });
+  });
 
     it ('Correctly pushes the report to all_reports table', function(done){
       var queryObject = {
