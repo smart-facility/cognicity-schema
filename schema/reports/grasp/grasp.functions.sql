@@ -6,9 +6,7 @@ CREATE OR REPLACE FUNCTION grasp.update_all_reports_from_grasp()
 $BODY$
 	BEGIN
 		IF (TG_OP = 'UPDATE') THEN
-			INSERT INTO cognicity.all_reports (fkey, created_at, text, source, disaster_type, lang, url, report_data, the_geom, image_url)
-        SELECT NEW.pkey, NEW.created_at, NEW.text, 'grasp', NEW.disaster_type, card.language, 'data.petabencana.id/cards/'||card.card_id, NEW.card_data, NEW.the_geom, NEW.image_url
-        FROM grasp.cards AS card WHERE card.card_id = NEW.card_id;
+      UPDATE cognicity.all_reports SET (image_url) = NEW.image_url WHERE fkey = NEW.pkey AND source = 'grasp'
 			RETURN NEW;
 		ELSIF (TG_OP = 'INSERT') THEN
 			INSERT INTO cognicity.all_reports (fkey, created_at, text, source, disaster_type, lang, url, report_data, the_geom, image_url)

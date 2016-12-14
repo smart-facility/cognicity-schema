@@ -127,6 +127,11 @@ describe ('CogniCity Schema Functions', function(){
           pgDone();
         });
       });
+      pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
+        client.query(UPDATE grasp.reports SET image_url = 'test_image_url' WHERE pkey = grasp_report_key);
+        done();
+        pgDone();
+      });
 
     });
 
@@ -147,6 +152,7 @@ describe ('CogniCity Schema Functions', function(){
           test.value(resultObject.lang).is('en');
           test.value(resultObject.report_data.flood_depth).is(100);
           test.value(resultObject.url).is('data.petabencana.id/cards/abcdefg');
+          test.value(resultObject.image_url).is('test_image_url');
           done();
           pgDone();
         });
