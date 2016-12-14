@@ -128,11 +128,11 @@ describe ('CogniCity Schema Functions', function(){
         });
       });
       pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
-        client.query(UPDATE grasp.reports SET image_url = 'test_image_url' WHERE pkey = grasp_report_key);
-        done();
-        pgDone();
+        client.query(UPDATE grasp.reports SET image_url = 'test_image_url' WHERE pkey = grasp_report_key, function(err, result){
+          done();
+          pgDone();
+        });
       });
-
     });
 
     it ('Correctly pushes the report to all_reports table', function(done){
