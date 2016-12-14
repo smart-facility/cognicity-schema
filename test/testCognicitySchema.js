@@ -112,23 +112,28 @@ describe ('CogniCity Schema Functions', function(){
   describe ('GRASP Reports Schema Functions', function(){
 
     before ('Insert dummy data', function(done){
-
       pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
-        client.query("INSERT INTO grasp.cards (card_id, username, network, language, received) VALUES ('abcdefg', 'user', 'test network', 'en', True) RETURNING pkey", function(err, result){
+        client.query("INSERT INTO grasp.cards (card_id, username, network, language, received) VALUES ('abcdefg', 'user', 'test network', 'en', True) RETURNING pkey",
+        function(err, result){
           card_key = result.rows[0].pkey;
           pgDone();
         });
       });
+
       pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
-        var properties = {flood_depth:100};
-        client.query({text: "INSERT INTO grasp.reports (card_id, created_at, disaster_type, text, card_data, image_id, status, the_geom) VALUES ('abcdefg', now(), 'flood', 'card text', $1, 1, 'confirmed', ST_GeomFromText('POINT(106.816667 -6.2)', 4326)) RETURNING pkey", values:[properties]}, function(err, result){
+        var properties = JSON.stringify({flood_depth:100});
+        client.query({text: "INSERT INTO grasp.reports (card_id, created_at, disaster_type, text, card_data, image_url, status, the_geom) VALUES ('abcdefg', now(), 'flood', 'card text', $1, 'no_url', 'confirmed', ST_GeomFromText('POINT(106.816667 -6.2)', 4326)) RETURNING pkey", values:[properties]}, function(err, result){
           grasp_report_key = result.rows[0].pkey;
-          done();
           pgDone();
+          pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
+            client.query({text: "UPDATE grasp.reports SET image_url = 'test_image_url' WHERE pkey = $1", values:[grasp_report_key]}, function(err, result){
+              done();
+              pgDone();
+            });
+          });
         });
       });
-
-    });
+  });
 
     it ('Correctly pushes the report to all_reports table', function(done){
       var queryObject = {
@@ -146,7 +151,8 @@ describe ('CogniCity Schema Functions', function(){
           test.value(resultObject.text).is('card text');
           test.value(resultObject.lang).is('en');
           test.value(resultObject.report_data.flood_depth).is(100);
-          test.value(resultObject.url).is('data.petabencana.id/abcdefg');
+          test.value(resultObject.url).is('data.petabencana.id/cards/abcdefg');
+          test.value(resultObject.image_url).is('test_image_url');
           done();
           pgDone();
         });
