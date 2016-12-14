@@ -114,7 +114,8 @@ describe ('CogniCity Schema Functions', function(){
     before ('Insert dummy data', function(done){
 
       pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
-        client.query("INSERT INTO grasp.cards (card_id, username, network, language, received) VALUES ('abcdefg', 'user', 'test network', 'en', True) RETURNING pkey", function(err, result){
+        client.query("INSERT INTO grasp.cards (card_id, username, network, language, received) VALUES ('abcdefg', 'user', 'test network', 'en', True) RETURNING pkey",
+        function(err, result){
           card_key = result.rows[0].pkey;
           pgDone();
         });
@@ -128,7 +129,7 @@ describe ('CogniCity Schema Functions', function(){
         });
       });
       pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
-        client.query(UPDATE grasp.reports SET image_url = 'test_image_url' WHERE pkey = grasp_report_key, function(err, result){
+        client.query({text: UPDATE grasp.reports SET image_url = 'test_image_url' WHERE pkey = grasp_report_key, values:[]}, function(err, result){
           done();
           pgDone();
         });
