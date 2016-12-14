@@ -129,7 +129,7 @@ describe ('CogniCity Schema Functions', function(){
         });
       });
       pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
-        client.query({text: UPDATE grasp.reports SET image_url = 'test_image_url' WHERE pkey = grasp_report_key, values:[]}, function(err, result){
+        client.query("UPDATE grasp.reports SET image_url = 'test_image_url' WHERE pkey = grasp_report_key", function(err, result){
           done();
           pgDone();
         });
