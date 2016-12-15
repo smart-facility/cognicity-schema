@@ -5,12 +5,14 @@ CREATE TABLE sensor_metadata(
 id serial NOT NULL,
 height_above_riverbed real NOT NULL,
 location geometry(Point,4326),
+city character varying,
 CONSTRAINT sensors_pkey PRIMARY KEY (id)
 );
 COMMENT ON TABLE sensor_metadata IS 'Information about individual sensors';
 COMMENT ON COLUMN sensor_metadata.id IS '{serial} [Primary Key] Unique key for each sensor';
 COMMENT ON COLUMN sensor_metadata.height_above_riverbed IS '{real} Height between riverbed and sensor in cm';
 COMMENT ON COLUMN sensor_metadata.location IS '{geometry object} Point location for sensor using WGS1984 coordinate reference system';
+COMMENT ON COLUMN sensor_metadata.city is '{character varying} City the sensor is in';
 -- Index sensor locations for spatial queries
 CREATE INDEX gix_sensor_metadata
 ON sensor_metadata
