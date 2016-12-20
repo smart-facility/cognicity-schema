@@ -8,7 +8,7 @@ CREATE TABLE grasp.cards (
   username varchar NOT NULL,
   network varchar NOT NULL,
   language varchar NOT NULL,
-  received boolean
+  received boolean,
   CONSTRAINT pkey_grasp_cards PRIMARY KEY (pkey)
 );
 
