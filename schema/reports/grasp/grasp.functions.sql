@@ -6,7 +6,7 @@ CREATE OR REPLACE FUNCTION grasp.update_all_reports_from_grasp()
 $BODY$
 	BEGIN
 		IF (TG_OP = 'UPDATE') THEN
-      UPDATE cognicity.all_reports SET image_url = NEW.image_url WHERE fkey = NEW.pkey AND source = 'grasp';
+      UPDATE cognicity.all_reports SET image_url = 'https://images.petabencana.id/'||NEW.image_url WHERE fkey = NEW.pkey AND source = 'grasp';
 			RETURN NEW;
 		ELSIF (TG_OP = 'INSERT') THEN
 			INSERT INTO cognicity.all_reports (fkey, created_at, text, source, disaster_type, lang, url, report_data, the_geom, image_url)
@@ -39,7 +39,7 @@ BEGIN
   RETURN new;
 END;
 $$ LANGUAGE plpgsql;
-    
+
 CREATE TRIGGER watch_grasp_cards_trigger
   AFTER UPDATE ON grasp.cards
   FOR EACH ROW
