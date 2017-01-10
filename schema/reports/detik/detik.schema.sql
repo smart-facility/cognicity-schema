@@ -5,7 +5,7 @@ CREATE SCHEMA detik;
 CREATE TABLE detik.reports
 (
   pkey bigserial NOT NULL,
-  contribution_id bigint NOT NULL,
+  contribution_id bigint NOT NULL UNIQUE,
   database_time timestamp with time zone DEFAULT now(),
   created_at timestamp with time zone,
   disaster_type character varying NOT NULL,
