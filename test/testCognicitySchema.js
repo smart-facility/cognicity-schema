@@ -333,6 +333,65 @@ describe ('CogniCity Schema Functions', function(){
       });
     });
   });
+  var report_id, report_key;
+  describe ('Zears Reports Schema Functions', function(){
+
+    before ('Insert dummy data', function(done){
+      var properties = JSON.stringify({depth:100, radius:200, category: 'flood'});
+
+      pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
+          client.query({text: "INSERT INTO zears.reports (pkey, created_at, disaster_type, text, lang, image_url, title, report_data, the_geom) VALUES (9999, now(), 'flood', 'report text', 'en', 'no_image', 'title', $1, ST_GeomFromText('POINT(106.816667 -6.2)', 4326)) RETURNING pkey", values:[properties]}, function(err, result){
+            report_id = result.rows[0].pkey;
+            done();
+            pgDone();
+          });
+        });
+    });
+
+    it ('Correctly pushes the report to all_reports table', function(done){
+
+      var queryObject = {
+        text: "SELECT * FROM cognicity.all_reports WHERE fkey = $1 AND source = 'zears';",
+        values: [ report_id ]
+      };
+
+      pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
+        client.query(queryObject, function(err, result){
+          test.value(err).is(null);
+          test.value(result.rows.length).is(1);
+          var resultObject = result.rows[0];
+          report_key = resultObject.pkey;
+          test.value(resultObject.disaster_type).is('flood');
+          test.value(resultObject.text).is('report text');
+          test.value(resultObject.lang).is('en');
+          done();
+          pgDone();
+        });
+      });
+    });
+
+    after ('Remove dummy data', function(done){
+      var queryObject = {
+        text: "DELETE FROM zears.reports WHERE pkey = $1;",
+        values: [ report_id ]
+      };
+      pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
+        client.query(queryObject, function(err, result){
+          pgDone();
+        });
+      });
+      queryObject = {
+        text: "DELETE FROM cognicity.all_reports WHERE pkey = $1;",
+        values: [ report_key ]
+      };
+      pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
+        client.query(queryObject, function(err, result){
+          pgDone();
+          done();
+        });
+      });
+    });
+  });
 });
 
 describe ('Floodgauge Schema Functions', function(){
