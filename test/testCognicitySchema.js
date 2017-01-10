@@ -341,6 +341,7 @@ describe ('CogniCity Schema Functions', function(){
 
       pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
           client.query({text: "INSERT INTO zears.reports (pkey, created_at, disaster_type, text, lang, image_url, title, report_data, the_geom) VALUES (9999, now(), 'flood', 'report text', 'en', 'no_image', 'title', $1, ST_GeomFromText('POINT(106.816667 -6.2)', 4326)) RETURNING pkey", values:[properties]}, function(err, result){
+            console.log(err, result);
             report_id = result.rows[0].pkey;
             done();
             pgDone();
@@ -357,6 +358,7 @@ describe ('CogniCity Schema Functions', function(){
 
       pg.connect(PG_CONFIG_STRING, function(err, client, pgDone){
         client.query(queryObject, function(err, result){
+          console.log(err, result);
           test.value(err).is(null);
           test.value(result.rows.length).is(1);
           var resultObject = result.rows[0];
