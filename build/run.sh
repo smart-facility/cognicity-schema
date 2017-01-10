@@ -39,8 +39,8 @@ psql -h $HOST -U $USER -d $DATABASE -f ./schema/reports/qlue/qlue.schema.sql
 psql -h $HOST -U $USER -d $DATABASE -f ./schema/reports/qlue/qlue.functions.sql
 
 # Load the zears report schema & functions
-psql -h $host -U $USER -d $DATABASE -f ./schema/reports/zears/zears.schema.sql
-psql -h $host -U $USER -d $DATABASE -f ./schema/reports/zears/zears.functions.sql
+psql -h $HOST -U $USER -d $DATABASE -f ./schema/reports/zears/zears.schema.sql
+psql -h $HOST -U $USER -d $DATABASE -f ./schema/reports/zears/zears.functions.sql
 
 # Load the floodgauge reports schema & functions
 psql -h $HOST -U $USER -d $DATABASE -f ./schema/reports/floodgauge/floodgauge.schema.sql
