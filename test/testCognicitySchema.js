@@ -334,7 +334,7 @@ describe ('CogniCity Schema Functions', function(){
     });
   });
   var report_id, report_key;
-  describe ('ZEARS Reports Schema Functions', function(){
+  describe ('Zears Reports Schema Functions', function(){
 
     before ('Insert dummy data', function(done){
       var properties = JSON.stringify({depth:100, radius:200, category: 'flood'});
