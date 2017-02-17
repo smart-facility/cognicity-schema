@@ -1,0 +1,8 @@
+sudo: false
+language: node_js
+node_js:
+  - "4.4"
+addons:
+  postgresql: "9.4"
+services: postgresql
+before_script: bash ./build/run.sh

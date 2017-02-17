@@ -3,43 +3,37 @@ CogniCity
 **Open Source GeoSocial Intelligence Framework**
 
 #### cognicity-schema: PostgreSQL/PostGIS Schema for CogniCity data.
+[![Build Status](https://travis-ci.org/urbanriskmap/cognicity-schema.svg?branch=master)](https://travis-ci.org/urbanriskmap/cognicity-schema)
 
 DOI for current stable release [v2.0.0](https://github.com/smart-facility/cognicity-schema/releases/tag/v2.0.0): [![DOI](https://zenodo.org/badge/19201/smart-facility/cognicity-schema.svg)](https://zenodo.org/badge/latestdoi/19201/smart-facility/cognicity-schema)
 
 ### About
 CogniCity-schema is the PostgreSQL/PostGIS database schema for the CogniCity Framework.  The schema contains the tables required for data input by [cognicity-reports](https://github.com/smart-facility/cognicity-reports-powertrack) and data output using [cognicity-server](https://github.com/smart-facility/cognicity-server).
 
-For a comprehensive overview of CogniCity, including the database schema see Chapter 2 of:
+For a comprehensive overview of CogniCity v1.0, including the original database schema see Chapter 2 of:
 > "White Paper - PetaJakarta.org:
 Assessing the Role of Social Media for Civic Co‑Management During Monsoon Flooding
 in Jakarta, Indonesia", 2014. Holderness T & Turpin E. [ISBN 978-1-74128-249-8 ](http://petajakarta.org/banjir/en/research/)
 
 ### Tables
-#### Base Schema
+#### CogniCity Schema v3.0
 | Table Name | Description |
 | ---------- | ----------- |
-| tweet_reports | Confirmed tweet reports of flooding |
-| tweet_reports_unconfirmed | Unconfirmed tweet reports of flooding |
-| nonsptial_tweet_reports | Confirmed tweet reports of flooding missing geolocation metadata |
-| all_users | Encrypted hash of all related Twitter usernames |
-| tweet_users | Encrypted hash of user names who have submitted confirmed reports |
-| tweet_invitees | Encrypted hash of users have been been sent an invitation |
-| nonspatial_tweet_users | Encrypted hash of users who have submitted confirmed reports missing geolocation metadata |
+| all_reports | Confirmed reports of flooding from all data sources |
+| instance_regions | Regions where CogniCity is currently deployed |
+| local_areas | Neighbourhood scale unit areas, in Indonesia these are RWs |
+| rem_status | Flood state of local_areas as defined by the Risk Evaluation Matrix |
+| rem_status | Log changes to rem_status |
 
-#### Sample Data
-The following tables are also included as samples of ancillary data used for map overlays and report aggregation, as part of the [PetaJakarta.org](http://petajakarta.org) project. SQL files for these tables and included data can be found in the `sample_data` folder.
-
-| Table Name | Description |
-| ---------- | ----------- |
-| jkt_city_boundary | Boundaries of Jakarta’s five municipalities |
-| jkt_subdistrict_boundary | Boundaries of Jakarta’s municipal sub-districts (‘Kecamatan’) |
-| jkt_village_boundary | Boundaries of Jakarta’s municipal villages (‘Kelurahan’) |
-| jkt_rw_boundary | Municipal boundaries of Jakarta’s municipal RW districts (‘Rukun-Warga’) |
-| pumps | Locations of water pumps in Jakarta |
-| floodgates | Locations of floodgates in Jakarta |
-| waterways | Locations of waterways in Jakarta |
+#### Data
+***To do***
+- instance_regions
+- local_areas
+- infrastructure (optional)
+- sensors (optional)
 
 #### Sample Data Licenses
+***To do***
 <dl>Jakarta's municipal boundaries are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>. <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a></dl>
 
 <dl>Hydrological Infrastructure Data (pumps, floodgates, waterways) is licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>. <img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/80x15.png"/></a>
@@ -47,24 +41,26 @@ The following tables are also included as samples of ancillary data used for map
 * Hydrological data are available from [Research Data Australia](https://researchdata.ands.org.au/petajakartaorg/552178) (Australian National Data Service), with DOIs held by the National Library of Australia.
 
 ### Dependencies
-* [PostgreSQL](http://www.postgresql.org) version 9.2 or later, with
+* [PostgreSQL](http://www.postgresql.org) version 9.4 or later, with
 * [PostGIS](http://postgis.net) version 2.0 or later
 
 ### Installation
 * The PostgreSQL database server must be running with a UTF-8 character set.
 
-#### Restoring the schema
-1. Create an empty database, using `createdb.sql` for required properties
-2. Load the schema into the new database
-```shell
-psql -d cognicity -f schema.sql
+#### Installing the schema and data
+Edit the file `build/run.sh` to specify your country. Country names should match the name specified in the `/data/` folder.
+
+To install the database and load data for specified country run:
+```sh
+$ build/run.sh
 ```
-3. Optionally, load the sample data:
-```shell
-for datafile in sample_data/*.sql
-do
-  psql -d cognicity -f $datafile
-done
+This will create a database "cognicity", build the empty schema and insert available data.
+
+### Testing
+```sh
+$ npm install
+$ npm test
 ```
+
 ### License
-The schema is released under the GPLv3 License. See License.txt for details.
+The schema is released under the GPLv3 License. See LICENSE.txt for details.

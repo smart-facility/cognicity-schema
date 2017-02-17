@@ -1,3 +1,5 @@
 1.0_dev/
 backups/
-data/
+node_modules/
+.DS_Store
+test/node_modules/
