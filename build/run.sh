@@ -2,10 +2,14 @@
 # Config
 PGHOST=${PGHOST:-'localhost'}
 PGUSER=${PGUSER:-'postgres'}
-PGDATABASE=${DATABASE:-'cognicity'} # Note: If you change this name don't forget to change it in the cognicity.createdb.sql file below
+PGDATABASE=${DATABASE:-'cognicity_indonesia'}
+COUNTRY=${COUNTRY:-'indonesia'}
 
-# Create db (optional)
-psql -h $PGHOST -U $PGUSER -d postgres -T template0 -f ./build/cognicity.createdb.sql
+# Create Database
+# Build command
+BUILD="CREATE DATABASE \"$PGDATABASE\" WITH OWNER = \"$PGUSER\" ENCODING = 'UTF8' TABLESPACE = pg_default LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8' CONNECTION LIMIT = -1;"
+
+psql -h $PGHOST -U $PGUSER -d postgres -T template0 -c """$BUILD"""
 
 # Load schema
 psql -h $PGHOST -U $PGUSER -d $PGDATABASE -f ./schema/cognicity/cognicity.schema.sql
@@ -14,10 +18,10 @@ psql -h $PGHOST -U $PGUSER -d $PGDATABASE -f ./schema/cognicity/cognicity.schema
 psql -h $PGHOST -U $PGUSER -d $PGDATABASE -f ./schema/cognicity/cognicity.functions.sql
 
 # Load instance data - regions
-psql -h $PGHOST -U $PGUSER -d $PGDATABASE -f ./data/cognicity/instance_regions.data.sql
+psql -h $PGHOST -U $PGUSER -d $PGDATABASE -f ./data/$COUNTRY/cognicity/instance_regions.data.sql
 
 # Load instance data - local areas
-psql -h $PGHOST -U $PGUSER -d $PGDATABASE -f ./data/cognicity/local_areas.data.sql
+psql -h $PGHOST -U $PGUSER -d $PGDATABASE -f ./data/$COUNTRY/cognicity/local_areas.data.sql
 
 # Load reports template schema & functions
 psql -h $PGHOST -U $PGUSER -d $PGDATABASE -f ./schema/reports/template/template.schema.sql
@@ -48,9 +52,9 @@ psql -h $PGHOST -U $PGUSER -d $PGDATABASE -f ./schema/reports/floodgauge/floodga
 
 # Load the pumps, floodgates and waterways infrastructure schema data
 psql -h $PGHOST -U $PGUSER -d $PGDATABASE -f ./schema/infrastructure/infrastructure.schema.sql
-psql -h $PGHOST -U $PGUSER -d $PGDATABASE -f ./data/infrastructure/floodgates.data.sql
-psql -h $PGHOST -U $PGUSER -d $PGDATABASE -f ./data/infrastructure/pumps.data.sql
-psql -h $PGHOST -U $PGUSER -d $PGDATABASE -f ./data/infrastructure/waterways.data.sql
+psql -h $PGHOST -U $PGUSER -d $PGDATABASE -f ./data/$COUNTRY/infrastructure/floodgates.data.sql
+psql -h $PGHOST -U $PGUSER -d $PGDATABASE -f ./data/$COUNTRY/infrastructure/pumps.data.sql
+psql -h $PGHOST -U $PGUSER -d $PGDATABASE -f ./data/$COUNTRY/infrastructure/waterways.data.sql
 
 # Load sensor schema
 psql -h $PGHOST -U $PGUSER -d $PGDATABASE -f ./schema/sensors/watersensor.schema.sql
