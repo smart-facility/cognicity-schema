@@ -27,8 +27,13 @@ in Jakarta, Indonesia", 2014. Holderness T & Turpin E. [ISBN 978-1-74128-249-8 ]
 
 #### Data
 ***To do***
+- instance_regions
+- local_areas
+- infrastructure (optional)
+- sensors (optional)
 
 #### Sample Data Licenses
+***To do***
 <dl>Jakarta's municipal boundaries are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>. <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a></dl>
 
 <dl>Hydrological Infrastructure Data (pumps, floodgates, waterways) is licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>. <img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/80x15.png"/></a>
@@ -43,10 +48,13 @@ in Jakarta, Indonesia", 2014. Holderness T & Turpin E. [ISBN 978-1-74128-249-8 ]
 * The PostgreSQL database server must be running with a UTF-8 character set.
 
 #### Installing the schema and data
+Edit the file `build/run.sh` to specify your country. Country names should match the name specified in the `/data/` folder.
+
+To install the database and load data for specified country run:
 ```sh
 $ build/run.sh
 ```
-This will create a database "cognicity", build the empty schema and insert any available data.
+This will create a database "cognicity", build the empty schema and insert available data.
 
 ### Testing
 ```sh
@@ -55,4 +63,4 @@ $ npm test
 ```
 
 ### License
-The schema is released under the GPLv3 License. See License.txt for details.
+The schema is released under the GPLv3 License. See LICENSE.txt for details.
