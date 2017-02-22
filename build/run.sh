@@ -2,7 +2,7 @@
 # Config
 PGHOST=${PGHOST:-'localhost'}
 PGUSER=${PGUSER:-'postgres'}
-PGDATABASE=${DATABASE:-'cognicity'}
+PGDATABASE=${DATABASE:-'cognicity_indonesia_2'}
 COUNTRY=${COUNTRY:-'indonesia'}
 
 # Create Database
@@ -52,9 +52,12 @@ psql -h $PGHOST -U $PGUSER -d $PGDATABASE -f ./schema/reports/floodgauge/floodga
 
 # Load the pumps, floodgates and waterways infrastructure schema data
 psql -h $PGHOST -U $PGUSER -d $PGDATABASE -f ./schema/infrastructure/infrastructure.schema.sql
-psql -h $PGHOST -U $PGUSER -d $PGDATABASE -f ./data/$COUNTRY/infrastructure/floodgates.data.sql
-psql -h $PGHOST -U $PGUSER -d $PGDATABASE -f ./data/$COUNTRY/infrastructure/pumps.data.sql
-psql -h $PGHOST -U $PGUSER -d $PGDATABASE -f ./data/$COUNTRY/infrastructure/waterways.data.sql
+
+# Load available infrastructure for selected country
+for entry in ./data/$COUNTRY/infrastructure/*.sql
+do
+  psql -h $PGHOST -U $PGUSER -d $PGDATABASE -f $entry
+done
 
 # Load sensor schema
 psql -h $PGHOST -U $PGUSER -d $PGDATABASE -f ./schema/sensors/watersensor.schema.sql
