@@ -48,6 +48,16 @@ $ build/run.sh
 ```
 This will create a database "cognicity", build the empty schema and insert any available data.
 
+#### Use of RDS image
+A blank database of the schema is also available as an [RDS](https://aws.amazon.com/rds/) PostgreSQL snapshot in the ap-southeast-1 (Singapore) region, ARN: arn:aws:rds:ap-southeast-1:917524458155:snapshot:cognicity-v3
+To use:
+* First copy the snapshot to the region (if not ap-southeast-1) where you want to start your instance.
+* In the RDS snapshots page for the region where you you want to start your instance, select the copied snapshot and restore it.
+* Modify the database, I recommend:
+  - creating a new parameter group (from the postgres 9.6 original) that sets rds.force_ssl to 1.
+  - setting a password (for user postgres).
+  - for production environments, using a multi-AZ setup for redundancy and setting the size to 100 GB for better IOPS performance.
+
 ### Testing
 ```sh
 $ npm install
