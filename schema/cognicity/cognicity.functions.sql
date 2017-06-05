@@ -23,9 +23,6 @@ CREATE TRIGGER update_all_reports_with_region
 -- Start and end times shouldbe ISO8601 format and must include timezone as UTC offset e.g. 2017-01-01T13:00+0700
 -- Returns a list of flood affected areas and their maximum flood state during given period.
 
-DROP FUNCTION cognicity.rem_get_max_flood(timestamp with time zone, timestamp with time zone);
-DROP TYPE max_flood_type;
-
 -- Type for storing output
 CREATE TYPE max_flood_type AS (local_area bigint, max_state int, changed timestamp with time zone, status_change_id bigint);
 
