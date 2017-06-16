@@ -79,7 +79,7 @@ ALTER FUNCTION cognicity.rem_get_max_flood(timestamp with time zone, timestamp w
   OWNER TO postgres;
 
 -- Function: cognicity.rem_get_flood(timestamp)
--- Function to get flood state from all areas between a given time
+-- Function to get flood state from all areas at a given time
 -- Times shouldbe ISO8601 format and must include timezone as UTC offset e.g. 2017-01-01T13:00+0700
 -- Returns a list of flood affected areas and their flood state at given point in time.
 CREATE OR REPLACE FUNCTION cognicity.rem_get_flood(timestamp with time zone)
