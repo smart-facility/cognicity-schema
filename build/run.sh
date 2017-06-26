@@ -2,8 +2,8 @@
 # Config
 PGHOST=${PGHOST:-'localhost'}
 PGUSER=${PGUSER:-'postgres'}
-PGDATABASE=${DATABASE:-'cognicity-india'}
-COUNTRY=${COUNTRY:-'india'}
+PGDATABASE=${DATABASE:-'cognicity-indonesia'}
+COUNTRY=${COUNTRY:-'indonesia'}
 
 # Create Database
 # Build command
