@@ -15,22 +15,38 @@ For a comprehensive overview of CogniCity v1.0, including the original database 
 Assessing the Role of Social Media for Civic Co‑Management During Monsoon Flooding
 in Jakarta, Indonesia", 2014. Holderness T & Turpin E. [ISBN 978-1-74128-249-8 ](http://petajakarta.org/banjir/en/research/)
 
+#### Reports
+Input data sources for reporting are received into separate schemas, named by report types. Trigger functions in each data source's schema normalise the different report data and push it to the global cognicity.all_reports table (see Table below).
+
+#### Risk Evaluation Matrix (REM)
+Flood affected area polygon data provided by emergency services via the REM interface is stored in the cognicity.rem_status table. The geographic data for these areas is stored in the cognicity.local_areas table.
+
 ### Tables
 #### CogniCity Schema v3.0
-| Table Name | Description |
-| ---------- | ----------- |
-| all_reports | Confirmed reports of flooding from all data sources |
-| instance_regions | Regions where CogniCity is currently deployed |
-| local_areas | Neighbourhood scale unit areas (In Indonesia, these are RWs. In Chennai, these are zones) |
-| rem_status | Flood state of local_areas as defined by the Risk Evaluation Matrix |
-| rem_status_log | Log changes to rem_status |
-
-#### Data
-***To do***
-- instance_regions
-- local_areas
-- infrastructure (optional)
-- sensors (optional)
+| Schema | Table Name | Description |
+| ------ | ---------- | ----------- |
+| cognicity | all_reports | Confirmed reports of flooding from all data sources |
+| cognicity | instance_regions | Regions where CogniCity is currently deployed |
+| cognicity | local_areas | Neighbourhood scale unit areas (In Indonesia, these are RWs. In Chennai, these are zones) |
+| cognicity| rem_status | Flood state of local_areas as defined by the Risk Evaluation Matrix |
+| cognicity| rem_status_log | Log changes to rem_status |
+| detik | reports | Reports from Pasangmata citizen journalism app (provided by Detik.com) |
+| detik | reports | Users with reports received from Pasangmata citizen journalism app (provided by Detik.com) |
+| floodgauge | reports | Live reports of water depths from flood gauges in city |
+| grasp | cards | Report cards issued to users via the Geosocial Rapid Assessment Platform (GRASP) |
+| grasp | log | Log of activity regarding report cards issued to users via the Geosocial Rapid Assessment Platform (GRASP) |
+| grasp | reports | Reports received from users via the Geosocial Rapid Assessment Platform (GRASP) |
+| infrastructure | floodgates | Location of flood mitigation infrastructure in each city |
+| infrastructure | floodgates | Location of flood mitigation infrastructure in each city |
+| infrastructure | pumps | Location of flood mitigation infrastructure in each city |
+| infrastructure | waterways | Location of waterways infrastructure in each city |
+| public | sensor_data | Data from automated water level sensors in the city |
+| public | sensor_metadata | Metadata of automated water level sensors in the city |
+| public | spatial_ref_systems | Table created by PostGIS |
+| qlue | reports | Reports from the government and citizen reporting application Qlue |
+| twitter | invitees | Hashed representation of Twitter users that were automatically contacted by the platform |
+| twitter | seen_tweet_id | Last Tweet processed by the cognicity-reports-powertrack module |
+| zears | reports | Reports collected from the Zurich "ZMap" application |
 
 #### Sample Data Licenses
 ***To do***
@@ -48,15 +64,25 @@ in Jakarta, Indonesia", 2014. Holderness T & Turpin E. [ISBN 978-1-74128-249-8 ]
 * The PostgreSQL database server must be running with a UTF-8 character set.
 
 #### Installing the schema and data
-Edit the file `build/run.sh` to specify your country. Country names should match the name specified in the `/data/` folder.
+This build `build/run.sh` script looks for the following environment variables:
+- $PGHOST
+- $PGUSER
+- $PGDATABASE
+- $COUNTRY
+
+Country names should match the name specified in the `/data/` folder.
 
 To install the database and load data for specified country run:
 ```sh
+$ export COUNTRY=indonesia
 $ build/run.sh
 ```
 This will create a database "cognicity", build the empty schema and insert available data.
 
+
 ### Testing
+Tests are run using NodeJS with Unit.js and Mocha to insert dummy values and perform integration testing on the database against the sample data sources.
+To run tests:
 ```sh
 $ npm install
 $ npm test
