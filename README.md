@@ -41,7 +41,7 @@ in Jakarta, Indonesia", 2014. Holderness T & Turpin E. [ISBN 978-1-74128-249-8 ]
 * Hydrological data are available from [Research Data Australia](https://researchdata.ands.org.au/petajakartaorg/552178) (Australian National Data Service), with DOIs held by the National Library of Australia.
 
 ### Dependencies
-* [PostgreSQL](http://www.postgresql.org) version 9.4 or later, with
+* [PostgreSQL](http://www.postgresql.org) version 9.6 or later, with
 * [PostGIS](http://postgis.net) version 2.0 or later
 
 ### Installation
