@@ -1,11 +1,10 @@
-dist: trusty
 language: node_js
 node_js:
    - "7"
-sudo: true
+sudo: false
 
 addons:
-  postgresql: "9.6"
+  postgresql: "9.5"
 services: postgresql
 
 branches:
