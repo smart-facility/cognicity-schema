@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/urbanriskmap/cognicity-schema#readme",
   "dependencies": {
-    "pg": "^6.1.0",
+    "pg": "6.1.0",
     "mocha": "^3.0.2",
     "unit.js": "^2.0.0"
   }

@@ -1,8 +1,18 @@
-sudo: false
 language: node_js
 node_js:
-  - "4.4"
+   - "7"
+sudo: true
+
 addons:
-  postgresql: "9.4"
+  postgresql: "9.5"
 services: postgresql
-before_script: bash ./build/run.sh
+
+branches:
+  only:
+    - master
+    - dev
+
+before_install: bash ./build/run.sh
+
+install:
+  - npm install
