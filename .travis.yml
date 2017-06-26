@@ -13,9 +13,7 @@ branches:
     - master
     - dev
 
-before_script: bash ./build/run.sh
+before_install: bash ./build/run.sh
 
 install:
   - npm install
-
-after_success: npm run coverage
