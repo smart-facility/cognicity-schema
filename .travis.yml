@@ -1,9 +1,21 @@
 dist: trusty
-sudo: false
 language: node_js
 node_js:
-  - "7.4"
+   - "7"
+sudo: false
+
 addons:
   postgresql: "9.6"
 services: postgresql
+
+branches:
+  only:
+    - master
+    - dev
+
 before_script: bash ./build/run.sh
+
+install:
+  - npm install
+
+after_success: npm run coverage
