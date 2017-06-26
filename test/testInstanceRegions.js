@@ -2,7 +2,7 @@ const test = require('unit.js');
 
 export default function (db, instance){
   // Cards endpoint
-  describe('Cards endpoint', function() {
+  describe('Instance Region Functionality', function() {
 
     let report_pkey;
 
@@ -40,7 +40,7 @@ export default function (db, instance){
     });
 
     // Clean up
-    after ('Remove dummy data', function(done){
+    after ('Remove dummy instance regions test report data', function(done){
 
       // Remove dummy report
       let query = "DELETE FROM cognicity.all_reports WHERE pkey = $1";
