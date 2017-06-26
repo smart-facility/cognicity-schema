@@ -5,7 +5,8 @@ CogniCity
 #### cognicity-schema: PostgreSQL/PostGIS Schema for CogniCity data.
 [![Build Status](https://travis-ci.org/urbanriskmap/cognicity-schema.svg?branch=master)](https://travis-ci.org/urbanriskmap/cognicity-schema)
 
-DOI for current stable release [v2.0.0](https://github.com/smart-facility/cognicity-schema/releases/tag/v2.0.0): [![DOI](https://zenodo.org/badge/19201/smart-facility/cognicity-schema.svg)](https://zenodo.org/badge/latestdoi/19201/smart-facility/cognicity-schema)
+DOI for current stable release [v3.0.0](https://github.com/urbanriskmap/cognicity-schema/releases/tag/v3.0.0):
+[![DOI](https://zenodo.org/badge/70249866.svg)](https://zenodo.org/badge/latestdoi/70249866)
 
 ### About
 CogniCity-schema is the PostgreSQL/PostGIS database schema for the CogniCity Framework.  The schema contains the tables required for data input by [cognicity-reports](https://github.com/smart-facility/cognicity-reports-powertrack) and data output using [cognicity-server](https://github.com/smart-facility/cognicity-server).
