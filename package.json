@@ -1,6 +1,6 @@
 {
   "name": "cognicity-schema",
-  "version": "0.0.1",
+  "version": "3.0.1",
   "description": "Cognicity Database Schema",
   "scripts": {
     "mocha": "mocha test",
