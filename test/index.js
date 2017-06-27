@@ -11,6 +11,7 @@ import testDetik from './testDetik';
 import testQlue from './testQlue';
 import testZears from './testZears';
 import testFloodgauge from './testFloodgauge';
+import testREM from './testREM';
 
 let instances = [
   {
@@ -27,9 +28,6 @@ let instances = [
     "test_card_data": { "water_depth": "100" } //TODO-check this
   }
 ]
-
-
-
 
 //[, 'postgres://postgres@localhost:5432/cognicity-india']
 
@@ -49,5 +47,5 @@ for (let i = instances.length; i--;){
   testQlue(db, instance)
   testZears(db, instance)
   testFloodgauge(db, instance)
-
+  testREM(db)
 }
