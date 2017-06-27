@@ -52,7 +52,7 @@ export default (db, instance) => {
 
     // Clean up
 
-    after ('Remove dummy template report data', (done) => {
+    after ('Remove dummy grasp report data', (done) => {
       // Remove dummy report
       let query = "DELETE FROM grasp.reports WHERE pkey = $1";
       let values = [ report_fkey ]

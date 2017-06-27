@@ -7,6 +7,10 @@ const pgp = require('pg-promise')({
 import testInstanceRegions from './testInstanceRegions.js';
 import testTemplateReportSchema from './testTemplateReportSchema';
 import testGRASP from './testGRASP';
+import testDetik from './testDetik';
+import testQlue from './testQlue';
+import testZears from './testZears';
+import testFloodgauge from './testFloodgauge';
 
 let instances = [
   {
@@ -41,5 +45,9 @@ for (let i = instances.length; i--;){
   testInstanceRegions(db, instance)
   testTemplateReportSchema(db, instance)
   testGRASP(db, instance)
+  testDetik(db, instance)
+  testQlue(db, instance)
+  testZears(db, instance)
+  testFloodgauge(db, instance)
 
 }

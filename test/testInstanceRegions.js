@@ -6,7 +6,7 @@ export default (db, instance) => {
 
     let report_pkey;
 
-    before ('Insert dummy data', (done) => {
+    before ('Insert dummy test report data', (done) => {
 
     // Insert test data
     let query = "INSERT INTO cognicity.all_reports (fkey, created_at, text, source, status, disaster_type, lang, url, image_url, title, the_geom) VALUES (1, now(), 'test report', 'testing', 'confirmed', 'flood', 'en', 'no_url', 'no_url', 'no_title',ST_GeomFromText('POINT($1 $2)',4326)) RETURNING pkey";
