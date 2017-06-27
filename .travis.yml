@@ -1,16 +1,20 @@
+dist: trusty
 language: node_js
 node_js:
    - "7"
-sudo: true
+sudo: false
 
 addons:
-  postgresql: "9.5"
-services: postgresql
+  postgresql: "9.6"
+  apt:
+    packages:
+      - postgresql-9.6-postgis-2.3
 
 branches:
   only:
     - master
     - dev
+    - chennaiChanges
 
 before_install: bash ./build/run.sh
 
