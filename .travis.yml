@@ -16,7 +16,5 @@ branches:
     - dev
     - chennaiChanges
 
-before_install: bash ./build/run.sh
-
 install:
   - npm install
