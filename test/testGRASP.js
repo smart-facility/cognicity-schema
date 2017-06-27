@@ -1,6 +1,6 @@
 const test = require('unit.js');
 
-export default function (db, instance){
+export default (db, instance) => {
   // Cards endpoint
   describe('GRASP functionality tests', () => {
 
