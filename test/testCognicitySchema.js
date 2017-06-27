@@ -1,8 +1,13 @@
-'use strict';
+import Promise from 'bluebird';
 
-var test = require('unit.js');
-var pg = require('pg');
-var PG_CONFIG_STRING = 'postgres://postgres@localhost:5432/cognicity'
+const test = require('unit.js');
+const pgp = require('pg-promise')({
+  promiseLib: Promise // Use bluebird for enhanced Promises
+});
+
+const db = pgp('postgres://postgres@localhost:5432/cognicity');
+
+//var PG_CONFIG_STRING =
 
 describe ('CogniCity Schema Functions', function(){
 

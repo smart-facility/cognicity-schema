@@ -6,6 +6,7 @@ const pgp = require('pg-promise')({
 
 import testInstanceRegions from './testInstanceRegions.js';
 import testTemplateReportSchema from './testTemplateReportSchema';
+import testGRASP from './testGRASP';
 
 let instances = [
   {
@@ -17,8 +18,9 @@ let instances = [
     "test_report_lon": 106.816667,
     "test_report_text": "report text",
     "test_report_lang": "en",
-    "test_report_url": "no_url"
-
+    "test_report_url": "no_url",
+    "test_card_url": "abcdefg",
+    "test_card_data": { "water_depth": "100" } //TODO-check this
   }
 ]
 
@@ -38,5 +40,6 @@ for (let i = instances.length; i--;){
   // Tests
   testInstanceRegions(db, instance)
   testTemplateReportSchema(db, instance)
+  testGRASP(db, instance)
 
 }

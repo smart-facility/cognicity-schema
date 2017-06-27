@@ -18,7 +18,7 @@ export default function (db, instance){
         done();
       })
       .catch(function(error){
-        test.fail(error)
+        console.log(error)
       })
     });
 
@@ -50,7 +50,7 @@ export default function (db, instance){
           done();
         })
         .catch(function(error){
-          test.fail(error);
+          console.log(error);
         })
     });
    });
