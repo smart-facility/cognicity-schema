@@ -5,7 +5,8 @@ CogniCity
 #### cognicity-schema: PostgreSQL/PostGIS Schema for CogniCity data.
 [![Build Status](https://travis-ci.org/urbanriskmap/cognicity-schema.svg?branch=master)](https://travis-ci.org/urbanriskmap/cognicity-schema)
 
-DOI for current stable release [v2.0.0](https://github.com/smart-facility/cognicity-schema/releases/tag/v2.0.0): [![DOI](https://zenodo.org/badge/19201/smart-facility/cognicity-schema.svg)](https://zenodo.org/badge/latestdoi/19201/smart-facility/cognicity-schema)
+DOI for current stable release [v3.0.1](https://github.com/urbanriskmap/cognicity-schema/releases/tag/v3.0.1):
+[![DOI](https://zenodo.org/badge/70249866.svg)](https://zenodo.org/badge/latestdoi/70249866)
 
 ### About
 CogniCity-schema is the PostgreSQL/PostGIS database schema for the CogniCity Framework.  The schema contains the tables required for data input by [cognicity-reports](https://github.com/smart-facility/cognicity-reports-powertrack), [cognicity-reports-detik](https://github.com/urbanriskmap/cognicity-reports-detik), [cognicity-reports-lambda](https://github.com/urbanriskmap/cognicity-reports-lambda), [cognicity-reports-telegram](https://github.com/urbanriskmap/cognicity-reports-telegram) and data output using [cognicity-server](https://github.com/urbanriskmap/cognicity-server).
@@ -79,6 +80,16 @@ $ build/run.sh
 ```
 This will create a database "cognicity_$COUNTRYNAME", build the empty schema and insert available data.
 
+
+#### Use of RDS image
+A blank database of the schema is also available as an [RDS](https://aws.amazon.com/rds/) PostgreSQL snapshot in the ap-southeast-1 (Singapore) region, ARN: arn:aws:rds:ap-southeast-1:917524458155:snapshot:cognicity-v3
+To use:
+* First copy the snapshot to the region (if not ap-southeast-1) where you want to start your instance.
+* In the RDS snapshots page for the region where you you want to start your instance, select the copied snapshot and restore it.
+* Modify the database, I recommend:
+  - creating a new parameter group (from the postgres 9.6 original) that sets rds.force_ssl to 1.
+  - setting a password (for user postgres).
+  - for production environments, using a multi-AZ setup for redundancy and setting the size to 100 GB for better IOPS performance.
 
 ### Testing
 Tests are run using NodeJS with Unit.js and Mocha to insert dummy values and perform integration testing on the database against the sample data sources.
