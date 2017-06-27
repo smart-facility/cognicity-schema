@@ -10,9 +10,9 @@ export default (db, instance) => {
     before ('Insert dummy Qlue data', (done) => {
 
     // Insert test data
-    let query = "INSERT INTO qlue.reports (post_id, created_at, disaster_type, text,  lang, image_url, title, qlue_city, the_geom) VALUES (9999, now(), 'flood', 'report text', 'en', 'no_image', 'title', 'jbd', ST_GeomFromText('POINT(106.816667 -6.2)', 4326)) RETURNING pkey";
+    let query = "INSERT INTO qlue.reports (post_id, created_at, disaster_type, text,  lang, image_url, title, qlue_city, the_geom) VALUES (9999, now(), 'flood', 'report text', 'en', 'no_image', 'title', $1, ST_GeomFromText('POINT($2 $3)', 4326)) RETURNING pkey";
 
-    let values = [ instance.test_report_lon, instance.test_report_lat ]
+    let values = [ instance.test_instance_region_code, instance.test_report_lon, instance.test_report_lat ]
     db.oneOrNone(query, values)
       .then((data) => {
         report_fkey = data.pkey;

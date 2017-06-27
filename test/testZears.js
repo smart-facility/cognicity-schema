@@ -10,7 +10,7 @@ export default (db, instance) => {
     before ('Insert dummy zears data', (done) => {
 
     // Insert test data
-    let query = "INSERT INTO zears.reports (pkey, created_at, disaster_type, text, lang, image_url, title, report_data, the_geom) VALUES (9999, now(), 'flood', 'report text', 'en', 'no_image', 'title', $1, ST_GeomFromText('POINT(106.816667 -6.2)', 4326)) RETURNING pkey";
+    let query = "INSERT INTO zears.reports (pkey, created_at, disaster_type, text, lang, image_url, title, report_data, the_geom) VALUES (9999, now(), 'flood', 'report text', 'en', 'no_image', 'title', $1, ST_GeomFromText('POINT($2 $3)', 4326)) RETURNING pkey";
 
     // Mock Zears report data
     let properties = JSON.stringify({depth:100, radius:200, category: 'flood'});
