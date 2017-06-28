@@ -3,7 +3,7 @@
 PGHOST=${PGHOST:-'localhost'}
 PGUSER=${PGUSER:-'postgres'}
 COUNTRY=${COUNTRY:-'indonesia'}
-PGDATABASE=${DATABASE:-'cognicity_'$COUNTRY}
+PGDATABASE=${DATABASE:-'cognicity'}
 PGPORT=${PGPORT:-'5432'}
 
 
