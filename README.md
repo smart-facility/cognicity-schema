@@ -59,7 +59,8 @@ Flood affected area polygon data provided by emergency services via the REM inte
 * Hydrological data are available from [Research Data Australia](https://researchdata.ands.org.au/petajakartaorg/552178) (Australian National Data Service), with DOIs held by the National Library of Australia.
 
 **India**
-
+<dl>Chennai's municipal boundaries courtesy of Chennai Municipal Corportation</dl>
+<dl>Chennai hydrological data (waterways) courtesy of Chennai Flood Management (http://chennaifloodmanagement.org/en/layers/geonode:watercourses#category-more)</dl>
 
 ### Dependencies
 * [PostgreSQL](http://www.postgresql.org) version 9.5 or later, with
