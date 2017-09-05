@@ -50,13 +50,16 @@ Flood affected area polygon data provided by emergency services via the REM inte
 | twitter | seen_tweet_id | Last Tweet processed by the cognicity-reports-powertrack module |
 | zears | reports | Reports collected from the Zurich "ZMap" application |
 
-#### Sample Data Licenses
-***To do***
+#### License for Sample Data
+**Indonesia**
 <dl>Jakarta's municipal boundaries are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>. <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a></dl>
 
 <dl>Hydrological Infrastructure Data (pumps, floodgates, waterways) is licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>. <img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/80x15.png"/></a>
 </dl>
 * Hydrological data are available from [Research Data Australia](https://researchdata.ands.org.au/petajakartaorg/552178) (Australian National Data Service), with DOIs held by the National Library of Australia.
+
+**India**
+
 
 ### Dependencies
 * [PostgreSQL](http://www.postgresql.org) version 9.5 or later, with
