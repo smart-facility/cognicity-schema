@@ -74,7 +74,10 @@ This build `build/run.sh` script looks for the following environment variables:
 - $PGHOST
 - $PGUSER
 - $PGDATABASE
-- $COUNTRY
+- $COUNTRY (country for instance)
+- $DATA (true | false - whether to load data)
+- $FUNCTIONS (true | false - whether to load schema functions)
+- $SCHEMA (true | false - whether to load schema definitions)
 
 Country names should match the name specified in the `/data/` folder.
 
