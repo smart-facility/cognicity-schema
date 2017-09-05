@@ -4,7 +4,7 @@ const pgp = require('pg-promise')({
   promiseLib: Promise // Use bluebird for enhanced Promises
 });
 
-const DATABASE = process.env['DATABASE'];
+const DATABASE = process.env['PGDATABASE'];
 const COUNTRY = process.env['COUNTRY'];
 console.log('Testing against ' + DATABASE + ' for ' + COUNTRY)
 

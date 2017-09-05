@@ -21,5 +21,5 @@ install:
 script:
   - npm test
   #- if [[ $TRAVIS_BRANCH != 'master' ]]; then branch='dev'; fi;
-  - export DATABASE=cognicity; npm run build
+  - export PGDATABASE=cognicity; npm run build
   - git clone -b dev https://github.com/urbanriskmap/cognicity-server.git urbanriskmap/cognicity-server ; cd urbanriskmap/cognicity-server ; npm install ; npm test

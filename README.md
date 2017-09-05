@@ -79,7 +79,7 @@ To install the database and load data for specified country run:
 $ export COUNTRY=indonesia
 $ build/run.sh
 ```
-This will create a database "cognicity_$COUNTRYNAME", build the empty schema and insert available data.
+This will create a database, build the empty schema and insert available data.
 
 
 #### Use of RDS image

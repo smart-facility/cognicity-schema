@@ -1,9 +1,5 @@
 CREATE SCHEMA cognicity;
 
--- Spatial extensions
-CREATE EXTENSION postgis;
-CREATE EXTENSION postgis_topology;
-
 -- All Reports Table
 -- Create Table to store reports
 CREATE TABLE cognicity.all_reports

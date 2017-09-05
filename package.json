@@ -5,8 +5,8 @@
   "scripts": {
     "build": "./build/run.sh",
     "mocha": "mocha --compilers js:babel-core/register test/index.js",
-    "test-indonesia": "export COUNTRY=indonesia DATABASE=cognicity_test_`date +%s`; npm run build ; npm run mocha; dropdb $DATABASE",
-    "test-india": "export COUNTRY=india ; export DATABASE=cognicity_test_`date +%s` ; npm run build ; npm run mocha; dropdb $DATABASE",
+    "test-indonesia": "export COUNTRY=indonesia PGDATABASE=cognicity_test_`date +%s`; npm run build ; npm run mocha; dropdb $DATABASE",
+    "test-india": "export COUNTRY=india ; export PGDATABASE=cognicity_test_`date +%s` ; npm run build ; npm run mocha; dropdb $DATABASE",
     "test": "eslint test ; npm run test-indonesia ; npm run test-india"
   },
   "repository": {
