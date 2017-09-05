@@ -17,10 +17,13 @@ if [ $SCHEMA == true ]; then
 
   psql -h $PGHOST -p $PGPORT -U $PGUSER -d postgres -c """$BUILD"""
 
-  POSTGIS="CREATE EXTENSION postgis; CREATE EXTENSION postgis_topology; CREATE EXTENSION fuzzystrmatch; CREATE EXTENSION address_standardizer; CREATE EXTENSION postgis_tiger_geocoder;"
-
   # Load postgis extensions
+  POSTGIS="CREATE EXTENSION postgis; CREATE EXTENSION postgis_topology; CREATE EXTENSION fuzzystrmatch; CREATE EXTENSION address_standardizer; CREATE EXTENSION postgis_tiger_geocoder;"
   psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -c """$POSTGIS"""
+
+  # Load UUID extension
+  UUID="CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";"
+  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -c """$UUID"""
 
   # Load schema
   psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f ./schema/cognicity/cognicity.schema.sql
