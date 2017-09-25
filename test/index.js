@@ -44,6 +44,20 @@ let instances = {
     "test_report_url": "no_url",
     "test_card_url": "abcdefg",
     "test_card_data": { "water_depth": "100" }
+  },
+
+  "us": {
+    "connection": "postgres://postgres@localhost:5432/" + DATABASE,
+    "name":"cognicity_us",
+    "test_instance_region_code": "brw",
+    "test_local_area_id":"1", // 03A grid in Fort Lauderdale
+    "test_report_lat": 26.09591,
+    "test_report_lon": -80.16504,
+    "test_report_text": "report text",
+    "test_report_lang": "en",
+    "test_report_url": "no_url",
+    "test_card_url": "abcdefg",
+    "test_card_data": { "water_depth": "100" }
   }
 };
 
