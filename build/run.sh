@@ -26,62 +26,62 @@ if [ $SCHEMA == true ]; then
   psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -c """$UUID"""
 
   # Load schema
-  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f ./schema/cognicity/cognicity.schema.sql
+  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $(pwd)/schema/cognicity/cognicity.schema.sql
 
   # Load reports template schema
-  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f ./schema/reports/template/template.schema.sql
+  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $(pwd)/schema/reports/template/template.schema.sql
 
   # Load the twitter (grasp version) reports schema
-  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f ./schema/reports/twitter/twitter.schema.sql
+  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $(pwd)/schema/reports/twitter/twitter.schema.sql
 
   # Load the grasp reports schema
-  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f ./schema/reports/grasp/grasp.schema.sql
+  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $(pwd)/schema/reports/grasp/grasp.schema.sql
 
   # Load the detik reports schema
-  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f ./schema/reports/detik/detik.schema.sql
+  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $(pwd)/schema/reports/detik/detik.schema.sql
 
   # Load the qlue reports schema
-  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f ./schema/reports/qlue/qlue.schema.sql
+  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $(pwd)/schema/reports/qlue/qlue.schema.sql
 
   # Load the zears report schema
-  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f ./schema/reports/zears/zears.schema.sql
+  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $(pwd)/schema/reports/zears/zears.schema.sql
 
   # Load the floodgauge reports schema
-  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f ./schema/reports/floodgauge/floodgauge.schema.sql
+  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $(pwd)/schema/reports/floodgauge/floodgauge.schema.sql
 
   # Load the pumps, floodgates and waterways infrastructure schema data
-  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f ./schema/infrastructure/infrastructure.schema.sql
+  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $(pwd)/schema/infrastructure/infrastructure.schema.sql
 
   # Load sensor schema
-  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f ./schema/sensors/watersensor.schema.sql
+  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $(pwd)/schema/sensors/watersensor.schema.sql
 fi
 
 # Functions loading
 if [ $FUNCTIONS == true ]; then
   # Load functions
-  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f ./schema/cognicity/cognicity.functions.sql
-  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f ./schema/reports/template/template.functions.sql
-  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f ./schema/reports/grasp/grasp.functions.sql
-  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f ./schema/reports/detik/detik.functions.sql
-  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f ./schema/reports/qlue/qlue.functions.sql
-  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f ./schema/reports/zears/zears.functions.sql
-  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f ./schema/reports/floodgauge/floodgauge.functions.sql
+  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $(pwd)/schema/cognicity/cognicity.functions.sql
+  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $(pwd)/schema/reports/template/template.functions.sql
+  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $(pwd)/schema/reports/grasp/grasp.functions.sql
+  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $(pwd)/schema/reports/detik/detik.functions.sql
+  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $(pwd)/schema/reports/qlue/qlue.functions.sql
+  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $(pwd)/schema/reports/zears/zears.functions.sql
+  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $(pwd)/schema/reports/floodgauge/floodgauge.functions.sql
 fi
 
 # Static data loading
 if [ $DATA == true ]; then
   # Load instance data - regions
-  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f ./data/$COUNTRY/cognicity/instance_regions.data.sql
+  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $(pwd)/data/$COUNTRY/cognicity/instance_regions.data.sql
 
   # Load instance data - local areas
-  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f ./data/$COUNTRY/cognicity/local_areas.data.sql
+  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $(pwd)/data/$COUNTRY/cognicity/local_areas.data.sql
 
   # Load available infrastructure for selected country
-  for entry in ./data/$COUNTRY/infrastructure/*.sql
+  for entry in $(pwd)/data/$COUNTRY/infrastructure/*.sql
   do
     psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $entry
   done
 
   # Initialize last seen tweet id
-  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f ./data/$COUNTRY/reports/twitter.data.sql
+  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $(pwd)/data/$COUNTRY/reports/twitter.data.sql
 fi
