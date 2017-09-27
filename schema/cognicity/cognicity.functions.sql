@@ -107,3 +107,13 @@ CREATE OR REPLACE FUNCTION cognicity.rem_get_flood(timestamp with time zone)
 
 ALTER FUNCTION cognicity.rem_get_flood(timestamp with time zone)
   OWNER TO postgres;
+
+CREATE FUNCTION cognicity.version()
+  RETURNS varchar
+  AS $BODY$
+  BEGIN
+  RETURN '3.0.3';
+  END
+  $BODY$
+LANGUAGE plpgsql VOLATILE
+COST 100;
