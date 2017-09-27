@@ -16,6 +16,7 @@ import testQlue from './testQlue';
 import testZears from './testZears';
 import testFloodgauge from './testFloodgauge';
 import testREM from './testREM';
+import testVersion from './testVersion';
 
 let instances = {
   "indonesia": {
@@ -76,3 +77,4 @@ testQlue(db, instance)
 testZears(db, instance)
 testFloodgauge(db, instance)
 testREM(db)
+testVersion(db, process.env.npm_package_version)
