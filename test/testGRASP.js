@@ -11,14 +11,14 @@ export default (db, instance) => {
     before ('Insert dummy GRASP data', (done) => {
 
     // Insert test data
-    let query = "INSERT INTO grasp.cards (card_id, username, network, language, received) VALUES ('abcdefg', 'user', 'test network', 'en', True) RETURNING pkey";
+    let query = "INSERT INTO grasp.cards (username, network, language, received) VALUES ('user', 'test network', 'en', True) RETURNING pkey";
 
     db.oneOrNone(query)
       .then((data) => card_pkey = data.pkey)
       .catch((error) => console.log(error));
 
     // Insert test data
-    query = "INSERT INTO grasp.reports (card_id, created_at, disaster_type, text, card_data, image_url, status, the_geom) VALUES ('abcdefg', now(), 'flood', 'report text', $1, 'no_url', 'confirmed', ST_GeomFromText('POINT($2 $3)', 4326)) RETURNING pkey";
+    query = "INSERT INTO grasp.reports (created_at, disaster_type, text, card_data, image_url, status, the_geom) VALUES (now(), 'flood', 'report text', $1, 'no_url', 'confirmed', ST_GeomFromText('POINT($2 $3)', 4326)) RETURNING pkey";
 
     let values = [ instance.test_card_data, instance.test_report_lon, instance.test_report_lat ];
 
