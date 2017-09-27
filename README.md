@@ -62,6 +62,9 @@ Flood affected area polygon data provided by emergency services via the REM inte
 <dl>Chennai's municipal boundaries courtesy of Chennai Municipal Corportation</dl>
 <dl>Chennai hydrological data (waterways) courtesy of Chennai Flood Management (http://chennaifloodmanagement.org/en/layers/geonode:watercourses#category-more)</dl>
 
+**Broward County, Florida, US**
+<dl>Broward County section grids courtesy of Broward County (http://gis.broward.org/GISData.htm)</dl>
+
 ### Dependencies
 * [PostgreSQL](http://www.postgresql.org) version 9.5 or later, with
 * [PostGIS](http://postgis.net) version 2.0 or later
