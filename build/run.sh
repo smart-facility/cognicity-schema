@@ -2,7 +2,7 @@
 # Config
 PGHOST=${PGHOST:-'localhost'}
 PGUSER=${PGUSER:-'postgres'}
-COUNTRY=${COUNTRY:-'indonesia'}
+COUNTRY=${COUNTRY:-'india'}
 PGDATABASE=${PGDATABASE:-'cognicity'}
 PGPORT=${PGPORT:-'5432'}
 PG_DEFAULT_DB=${PG_DEFAULT_DB:-'postgres'}
