@@ -2,7 +2,7 @@ const test = require('unit.js');
 
 export default (db, instance) => {
   // Cards endpoint
-  describe('GRASP functionality tests', () => {
+  describe('GRASP functionality tests: ' + instance.name, () => {
 
     let card_pkey; // Global card pkey object as created by database
     let report_fkey; // Global report foreign key object as created by database in reports table
@@ -47,7 +47,8 @@ export default (db, instance) => {
           test.value(data[0].lang).is(instance.test_report_lang);
           test.value(data[0].url).is(card_id);
           test.value(data[0].report_data.water_depth).is(instance.test_card_data.water_depth);
-
+          test.value(data[0].tags.instance_region_code).is(instance.test_instance_region_code);
+          test.value(data[0].tags.local_area_id).is(instance.test_local_area_id);
           report_pkey = data[0].pkey;
           done();
         })

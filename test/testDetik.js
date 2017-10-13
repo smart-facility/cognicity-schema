@@ -2,7 +2,7 @@ const test = require('unit.js');
 
 export default (db, instance) => {
   // Cards endpoint
-  describe('Detik report schema functionality', () => {
+  describe('Detik report schema functionality: ' + instance.name, () => {
 
     let report_fkey;
     let report_pkey;

@@ -2,7 +2,7 @@ const test = require('unit.js');
 
 export default (db, instance) => {
   // Cards endpoint
-  describe('Instance Region Functionality', () => {
+  describe('Instance Region Functionality: ' + instance.name, () => {
 
     let report_pkey;
 

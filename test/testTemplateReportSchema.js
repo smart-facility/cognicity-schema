@@ -2,7 +2,7 @@ const test = require('unit.js');
 
 export default (db, instance) => {
   // Cards endpoint
-  describe('Template report data source functionality', () => {
+  describe('Template report data source functionality: ' + instance.name, () => {
 
     let report_pkey; // Global report pkey object as created by database
     let report_fkey; // Global report foreign key object as created by database in reports table

@@ -2,7 +2,7 @@ const test = require('unit.js');
 
 export default (db, instance) => {
   // Cards endpoint
-  describe('Floodgauge report schema functionality', () => {
+  describe('Floodgauge report schema functionality: ' + instance.name, () => {
 
     let report_pkey;
 
