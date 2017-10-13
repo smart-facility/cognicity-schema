@@ -34,6 +34,30 @@ let deployments = {
         "test_report_url": "no_url",
         "test_card_url": "abcdefg",
         "test_card_data": { "water_depth": "100" }
+      },
+      {
+        "name": "Surabaya",
+        "test_instance_region_code": "sby",
+        "test_local_area_id":"null",
+        "test_report_lat": -7.410,
+        "test_report_lon": 112.771,
+        "test_report_text": "report text",
+        "test_report_lang": "en",
+        "test_report_url": "no_url",
+        "test_card_url": "abcdefg",
+        "test_card_data": { "water_depth": "100" }
+      },
+      {
+        "name": "Bandung",
+        "test_instance_region_code": "bdg",
+        "test_local_area_id":"null",
+        "test_report_lat": -6.930,
+        "test_report_lon": 107.650,
+        "test_report_text": "report text",
+        "test_report_lang": "en",
+        "test_report_url": "no_url",
+        "test_card_url": "abcdefg",
+        "test_card_data": { "water_depth": "100" }
       }
     ]
   },
