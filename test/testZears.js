@@ -3,19 +3,17 @@ const test = require('unit.js');
 export default (db, instance) => {
   // Cards endpoint
   describe('Zears report schema functionality', () => {
-
     let report_fkey;
     let report_pkey;
 
-    before ('Insert dummy zears data', (done) => {
-
+    before('Insert dummy zears data', (done) => {
     // Insert test data
-    let query = "INSERT INTO zears.reports (pkey, created_at, disaster_type, text, lang, image_url, title, report_data, the_geom) VALUES (9999, now(), 'flood', 'report text', 'en', 'no_image', 'title', $1, ST_GeomFromText('POINT($2 $3)', 4326)) RETURNING pkey";
+    let query = 'INSERT INTO zears.reports (pkey, created_at, disaster_type, text, lang, image_url, title, report_data, the_geom) VALUES (9999, now(), \'flood\', \'report text\', \'en\', \'no_image\', \'title\', $1, ST_GeomFromText(\'POINT($2 $3)\', 4326)) RETURNING pkey';
 
     // Mock Zears report data
-    let properties = JSON.stringify({depth:100, radius:200, category: 'flood'});
+    let properties = JSON.stringify({depth: 100, radius: 200, category: 'flood'});
 
-    let values = [ properties, instance.test_report_lon, instance.test_report_lat ]
+    let values = [properties, instance.test_report_lon, instance.test_report_lat];
     db.oneOrNone(query, values)
       .then((data) => {
         report_fkey = data.pkey;
@@ -25,11 +23,10 @@ export default (db, instance) => {
     });
 
     // Test
-    it ('Correctly pushes to cognicity.all_reports and defines report regions', (done) => {
-
+    it('Correctly pushes to cognicity.all_reports and defines report regions', (done) => {
       // Check the test data has been assigned correct polygon
-      let query = "SELECT * FROM cognicity.all_reports WHERE fkey = $1 AND source = 'zears'";
-      let values = [ report_fkey ]
+      let query = 'SELECT * FROM cognicity.all_reports WHERE fkey = $1 AND source = \'zears\'';
+      let values = [report_fkey];
       db.any(query, values)
         .then((data) => {
           report_pkey = data[0].pkey;
@@ -46,18 +43,18 @@ export default (db, instance) => {
     });
 
     // Clean up
-    after ('Remove dummy zears report data', (done) => {
+    after('Remove dummy zears report data', (done) => {
       // Remove dummy report
-      let query = "DELETE FROM zears.reports WHERE pkey = $1";
-      let values = [ report_fkey ]
+      let query = 'DELETE FROM zears.reports WHERE pkey = $1';
+      let values = [report_fkey];
       db.none(query, values)
         .catch((error) => console.log(error));
 
-      query = "DELETE FROM cognicity.all_reports WHERE pkey = $1";
-      values = [ report_pkey ]
+      query = 'DELETE FROM cognicity.all_reports WHERE pkey = $1';
+      values = [report_pkey];
       db.none(query, values)
         .then(() => done())
         .catch((error) => console.log(error));
      });
    });
-}
+};
