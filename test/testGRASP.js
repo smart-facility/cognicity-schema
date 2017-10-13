@@ -3,28 +3,34 @@ const test = require('unit.js');
 export default (db, instance) => {
   // Cards endpoint
   describe('GRASP functionality tests', () => {
-    let card_pkey; // Global card pkey object as created by database
-    let report_fkey; // Global report foreign key object as created by database in reports table
-    let report_pkey; // Global report pkey object as created by database
-    let card_id; // Global card id object created by database
+    let cardPkey; // Global card pkey object as created by database
+    let reportFkey; // Global report foreign key as created by reports table
+    let reportPkey; // Global report pkey as created by database
+    let cardId; // Global card id object created by database
 
     before('Insert dummy GRASP data', (done) => {
     // Insert test data
-    let query = 'INSERT INTO grasp.cards (username, network, language, received) VALUES (\'user\', \'test network\', \'en\', True) RETURNING pkey, card_id';
+    let query = `INSERT INTO grasp.cards (username, network, language, received)
+    VALUES ('user', 'test network', 'en', True) RETURNING pkey, card_id`;
 
     db.oneOrNone(query)
       .then((data) => {
-        card_pkey = data.pkey;
-        card_id = data.card_id;
+        cardPkey = data.pkey;
+        cardId = data.card_id;
 
         // Insert test data
-        query = 'INSERT INTO grasp.reports (card_id, created_at, disaster_type, text, card_data, image_url, status, the_geom) VALUES ($4, now(), \'flood\', \'report text\', $1, \'no_url\', \'confirmed\', ST_GeomFromText(\'POINT($2 $3)\', 4326)) RETURNING pkey';
+        query = `INSERT INTO grasp.reports (card_id, created_at, disaster_type,
+          text, card_data, image_url, status, the_geom) VALUES ($4, now(),
+          'flood', 'report text', $1, 'no_url', 'confirmed',
+          ST_GeomFromText('POINT($2 $3)', 4326))
+          RETURNING pkey`;
 
-        let values = [instance.test_card_data, instance.test_report_lon, instance.test_report_lat, card_id];
+        let values = [instance.test_card_data, instance.test_report_lon,
+          instance.test_report_lat, cardId];
 
         db.oneOrNone(query, values)
           .then((data) => {
-            report_fkey = data.pkey;
+            reportFkey = data.pkey;
             done();
           })
           .catch((error) => console.log(error));
@@ -33,20 +39,24 @@ export default (db, instance) => {
     });
 
     // Test
-    it('Correctly pushes the report to the cognicity.all_reports table', (done) => {
+    it('Correctly pushes the report to the cognicity.all_reports table',
+      (done) => {
       // Check the test data has been assigned correct polygon
-      let query = 'SELECT * FROM cognicity.all_reports WHERE fkey = $1 AND source = \'grasp\'';
-      let values = [report_fkey];
+      let query = `SELECT * FROM cognicity.all_reports WHERE fkey = $1
+                  AND source = 'grasp'`;
+      let values = [reportFkey];
       db.any(query, values)
         .then((data) => {
           test.value(data.length).is(1);
-          test.value(data[0].tags.disaster_type).is(instance.test_disaster_type);
+          test.value(data[0].tags.disaster_type)
+            .is(instance.test_disaster_type);
           test.value(data[0].text).is(instance.test_report_text);
           test.value(data[0].lang).is(instance.test_report_lang);
-          test.value(data[0].url).is(card_id);
-          test.value(data[0].report_data.water_depth).is(instance.test_card_data.water_depth);
+          test.value(data[0].url).is(cardId);
+          test.value(data[0].report_data.water_depth)
+            .is(instance.test_card_data.water_depth);
 
-          report_pkey = data[0].pkey;
+          reportPkey = data[0].pkey;
           done();
         })
         .catch((error) => test.fail(error));
@@ -57,17 +67,17 @@ export default (db, instance) => {
     after('Remove dummy grasp report data', (done) => {
       // Remove dummy report
       let query = 'DELETE FROM grasp.reports WHERE pkey = $1';
-      let values = [report_fkey];
+      let values = [reportFkey];
       db.none(query, values)
         .catch((error) => console.log(error));
 
       query = 'DELETE FROM grasp.cards WHERE pkey = $1';
-      values = [card_pkey];
+      values = [cardPkey];
       db.none(query, values)
         .catch((error) => console.log(error));
 
       query = 'DELETE FROM cognicity.all_reports WHERE pkey = $1';
-      values = [report_pkey];
+      values = [reportPkey];
       db.none(query, values)
         .then(() => done())
         .catch((error) => console.log(error));
