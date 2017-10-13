@@ -22,7 +22,7 @@ source build/run.sh
 ## psql -d $PROD -h $PGHOST -U $PGUSER -f schema/reports/grasp/grasp.uuid_upgrade.sql
 
 # Copy the old data to the new database
-pg_dump -a $PROD -h $PGHOST -U $PGUSER --disable-triggers -t cognicity.* -t detik.* -t floodgauge.* -t grasp.* -t infrastructure.* -t public.* -t qlue.* -t sensors.* -t twitter.* -t zears.* | psql -d $NEW -h $PGHOST -U $PGUSER
+pg_dump -a $PROD -h $PGHOST -U $PGUSER --disable-triggers -t 'cognicity.*' -t 'detik.*' -t 'floodgauge.*' -t 'grasp.*' -t 'infrastructure.*' -t 'qlue.*' -t 'sensors.*' -t 'twitter.*' -t 'zears.*' | psql -d $NEW -h $PGHOST -U $PGUSER
 
 # Kill prod connections
 psql -d $PROD -h $PGHOST -U $PGUSER -c "SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$PROD' AND pid <> pg_backend_pid();"
