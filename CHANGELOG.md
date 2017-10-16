@@ -7,3 +7,5 @@ CHANGE LOG
 - added data for Mumbai and Bangalore
 - added test support for multiple instances per deployment
 - added tests for Surabaya and Bandung
+
+## v3.0.5
