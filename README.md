@@ -109,6 +109,28 @@ To run tests:
 $ npm install
 $ npm test
 ```
+
+
+#### Adding New City
+Instructions to add a new city in cognicity-schema
+* Install the database and load data for specified country run:
+```sh
+$ export COUNTRY=indonesia
+$ build/run.sh
+```
+This will create a database, build the empty schema and insert available data into postgres.
+
+* prepare instance_region and local_area data for the city with same columns as schema.
+
+* Add the cleaned up data into schema
+```sh
+$ shp2pgsql -I -d -s 4326 <FILENAME.SHP> <SCHEMA>.<TABLE> | psql -U postgres -d <DATABASE>
+```
+* select table>backup and add data into data.sql file in cognicity-schema repo
+
+* add new instance in tests at index.js - change pkey, instance_region_code, report location and test.
+
+
 ### Contribution Guidelines
 * Issues are tracked on [GitHub](https://github.com/urbanriskmap/cognicity-schema/issues)
 
