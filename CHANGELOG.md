@@ -9,3 +9,4 @@ CHANGE LOG
 - added tests for Surabaya and Bandung
 
 ## v3.0.5
+- added Semarang extents to Indonesian data
