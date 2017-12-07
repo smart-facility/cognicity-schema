@@ -59,6 +59,18 @@ let deployments = {
         'test_card_url': 'abcdefg',
         'test_card_data': {'water_depth': '100'},
       },
+      {
+        'name': 'Semarang',
+        'test_instance_region_code': 'srg',
+        'test_local_area_id': 'null',
+        'test_report_lat': -7.1141,
+        'test_report_lon': 110.3850,
+        'test_report_text': 'report text',
+        'test_report_lang': 'en',
+        'test_report_url': 'no_url',
+        'test_card_url': 'abcdefg',
+        'test_card_data': {'water_depth': '100'},
+      },
     ],
   },
 
