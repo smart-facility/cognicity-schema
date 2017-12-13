@@ -15,7 +15,7 @@ if [ $SCHEMA == true ]; then
   # Create Database
   # Build command
   echo "Create database"
-  BUILD="CREATE DATABASE \"$PGDATABASE\" WITH OWNER = \"$PGUSER\" ENCODING = 'UTF8' LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8';"
+  BUILD="CREATE DATABASE \"$PGDATABASE\" WITH OWNER = \"$PGUSER\" ENCODING = 'UTF8';"
 
   psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PG_DEFAULT_DB -c """$BUILD"""
 
