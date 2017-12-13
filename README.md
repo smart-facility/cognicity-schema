@@ -140,7 +140,7 @@ The release procedure is as follows:
 - Check that package.json contains the correct release version number.
 - Check that package-lock.json contains the correct release version number.
 - Check that schema/cognicity/cognicity.schema.functions.sql `cognicity.version()` function returns the correct release version number.
-- Commit any changes and tagin git from the current head of master. The tag should be the same as the version specified in the package.json file and elsewhere - this is the release version.
+- Commit any changes and tag in git from the current head of master. The tag should be the same as the version specified in the package.json file and elsewhere - this is the release version.
 - Pull changes into dev branch.
 - Increment the version number in package.json, package-lock.json, and `cognicity.version()`.
 - Commit these changes with the message 'Opened new version for development'.
