@@ -12,3 +12,5 @@ CHANGE LOG
 - added Semarang extents to Indonesian data
 - added test instance parameters for Semarang
 - removed default parameters from database build script
+
+## v3.0.6
