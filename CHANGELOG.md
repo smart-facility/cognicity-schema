@@ -14,3 +14,4 @@ CHANGE LOG
 - removed default parameters from database build script
 
 ## v3.0.6
+- documented release procedue in README.md
