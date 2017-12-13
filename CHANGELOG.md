@@ -7,3 +7,8 @@ CHANGE LOG
 - added data for Mumbai and Bangalore
 - added test support for multiple instances per deployment
 - added tests for Surabaya and Bandung
+
+## v3.0.5
+- added Semarang extents to Indonesian data
+- added test instance parameters for Semarang
+- removed default parameters from database build script
