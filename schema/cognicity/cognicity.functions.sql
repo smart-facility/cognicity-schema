@@ -108,6 +108,7 @@ CREATE OR REPLACE FUNCTION cognicity.rem_get_flood(timestamp with time zone)
 ALTER FUNCTION cognicity.rem_get_flood(timestamp with time zone)
   OWNER TO postgres;
 
+/* Output schema version */
 CREATE FUNCTION cognicity.version()
   RETURNS varchar
   AS $BODY$
