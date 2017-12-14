@@ -6,7 +6,8 @@ CREATE OR REPLACE FUNCTION set_rds_postgis_permissions()
   RETURNS VOID AS $$
   DECLARE rds INTEGER;
   BEGIN
-    SELECT INTO rds count(*) FROM information_schema.schemata WHERE schema_name = 'topology' AND schema_owner = 'rdsadmin';
+    -- if user rdsadmin exists assume this is an AWS RDS instance
+    SELECT INTO rds count(*) FROM pg_user WHERE usename = 'rdsadmin';
     IF rds > 0 THEN
       ALTER SCHEMA tiger owner to rds_superuser;
       ALTER SCHEMA topology owner to rds_superuser;
