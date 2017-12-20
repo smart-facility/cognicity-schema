@@ -16,3 +16,4 @@ CHANGE LOG
 ## v3.0.6
 - documented release procedure in README.md
 - added RDS permissions script
+- added table reports_points_log

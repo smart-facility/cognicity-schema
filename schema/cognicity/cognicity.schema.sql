@@ -84,7 +84,7 @@ CREATE TABLE cognicity.rem_status_log
   CONSTRAINT rem_status_log_id_pkey PRIMARY KEY (id)
 );
 
-CREATE TABLE cognicity.report_points_log
+CREATE TABLE cognicity.reports_points_log
 (
   id bigserial NOT NULL,
   report_id bigint NOT NULL,
