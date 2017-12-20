@@ -83,3 +83,12 @@ CREATE TABLE cognicity.rem_status_log
   username character varying,
   CONSTRAINT rem_status_log_id_pkey PRIMARY KEY (id)
 );
+
+CREATE TABLE cognicity.report_points_log
+(
+  id bigserial NOT NULL,
+  report_id bigint NOT NULL,
+  changed timestamp with time zone DEFAULT now(),
+  value integer,
+  CONSTRAINT report_points_log_pkey PRIMARY KEY (id)
+);
