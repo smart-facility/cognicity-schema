@@ -17,3 +17,5 @@ CHANGE LOG
 - documented release procedure in README.md
 - added RDS permissions script
 - added table reports_points_log
+- added district_id field to local_areas data in Indonesia
+- added district_id field to tags property of reports
