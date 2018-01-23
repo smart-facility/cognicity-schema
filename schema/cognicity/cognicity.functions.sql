@@ -5,7 +5,7 @@ CREATE OR REPLACE FUNCTION cognicity.define_report_region()
 $BODY$
 	BEGIN
 	UPDATE cognicity.all_reports
-    SET tags = (SELECT '{"instance_region_code":"' || COALESCE(code.code, 'null') || '", '|| '"local_area_id":"' || COALESCE(la.pkey::varchar, 'null') ||'"}' FROM (SELECT (SELECT code FROM cognicity.instance_regions AS i WHERE ST_WITHIN(NEW.the_geom, i.the_geom))) AS code, (SELECT (SELECT pkey FROM cognicity.local_areas as j WHERE ST_WITHIN(NEW.the_geom, j.the_geom))) AS la)::json
+    SET tags = (SELECT (la.x->0)::jsonb || (code.x->0)::jsonb FROM (SELECT COALESCE(array_to_json(array_agg(row_to_json(a))),'[{"local_area_id":null, "district_id":null}]') as x FROM (SELECT pkey::varchar as local_area_id, district_id::varchar as district_id FROM cognicity.local_areas as j WHERE ST_Within(NEW.the_geom, j.the_geom)) as a) as la, (SELECT COALESCE(array_to_json(array_agg(row_to_json(a))),'[{"instance_region_code":null}]') as x FROM (SELECT code as instance_region_code FROM cognicity.instance_regions as i WHERE ST_Within(NEW.the_geom, i.the_geom)) as a) as code)
     WHERE pkey = NEW.pkey;
 	RETURN NEW;
 	END;
@@ -108,11 +108,12 @@ CREATE OR REPLACE FUNCTION cognicity.rem_get_flood(timestamp with time zone)
 ALTER FUNCTION cognicity.rem_get_flood(timestamp with time zone)
   OWNER TO postgres;
 
+/* Output schema version */
 CREATE FUNCTION cognicity.version()
   RETURNS varchar
   AS $BODY$
   BEGIN
-  RETURN '3.0.5';
+  RETURN '3.0.6';
   END
   $BODY$
 LANGUAGE plpgsql VOLATILE

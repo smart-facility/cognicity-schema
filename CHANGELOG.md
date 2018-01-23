@@ -12,3 +12,10 @@ CHANGE LOG
 - added Semarang extents to Indonesian data
 - added test instance parameters for Semarang
 - removed default parameters from database build script
+
+## v3.0.6
+- documented release procedure in README.md
+- added RDS permissions script
+- added table reports_points_log
+- added district_id field to local_areas data in Indonesia
+- added district_id field to tags property of reports

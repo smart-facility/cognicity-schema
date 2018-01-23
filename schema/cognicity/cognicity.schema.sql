@@ -51,6 +51,7 @@ CREATE TABLE cognicity.local_areas(
   parent_name character varying,
   city_name character varying,
   instance_region_code character varying NOT NULL,
+  district_id integer,
   CONSTRAINT local_area_pkey PRIMARY KEY (pkey)
 );
 
@@ -82,4 +83,13 @@ CREATE TABLE cognicity.rem_status_log
   id bigserial NOT NULL,
   username character varying,
   CONSTRAINT rem_status_log_id_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE cognicity.reports_points_log
+(
+  id bigserial NOT NULL,
+  report_id bigint NOT NULL,
+  changed timestamp with time zone DEFAULT now(),
+  value integer,
+  CONSTRAINT report_points_log_pkey PRIMARY KEY (id)
 );

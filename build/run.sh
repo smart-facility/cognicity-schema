@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+
+# Exit 1 on any error
+set -e
+
 # Config
 PGHOST=${PGHOST:-'localhost'}
 PGUSER=${PGUSER:-'postgres'}
@@ -23,6 +27,10 @@ if [ $SCHEMA == true ]; then
   # Load postgis extensions
   POSTGIS="CREATE EXTENSION postgis; CREATE EXTENSION postgis_topology; CREATE EXTENSION fuzzystrmatch; CREATE EXTENSION address_standardizer; CREATE EXTENSION postgis_tiger_geocoder;"
   psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -c """$POSTGIS"""
+
+  # Fix AWS RDS permissions if need
+  echo "Check if RDS user present and fix permissions if needed"
+  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $(pwd)/build/set_rds_postgis_permissions.sql
 
   echo "Load UUID"
   # Load UUID extension

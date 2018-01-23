@@ -134,5 +134,17 @@ $ shp2pgsql -I -d -s 4326 <FILENAME.SHP> <SCHEMA>.<TABLE> | psql -U postgres -d 
 ### Contribution Guidelines
 * Issues are tracked on [GitHub](https://github.com/urbanriskmap/cognicity-schema/issues)
 
+### Release
+The release procedure is as follows:
+- Update the CHANGELOG.md file with the newly released version and high-level overview of changes.
+- Check that package.json contains the correct release version number.
+- Check that package-lock.json contains the correct release version number.
+- Check that schema/cognicity/cognicity.schema.functions.sql `cognicity.version()` function returns the correct release version number.
+- Commit any changes and tag in git from the current head of master. The tag should be the same as the version specified in the package.json file and elsewhere - this is the release version.
+- Pull changes into dev branch.
+- Increment the version number in package.json, package-lock.json, and `cognicity.version()`.
+- Commit these changes with the message 'Opened new version for development'.
+- Further development is now on the updated version number until the release process begins  again.
+
 ### License
 The schema is released under the GPLv3 License. See LICENSE.txt for details.
