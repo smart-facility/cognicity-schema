@@ -2,25 +2,32 @@ dist: trusty
 language: node_js
 node_js:
    - "6.10.0"
-sudo: false
-
-addons:
-  postgresql: "10"
-  apt:
-    packages:
-      - postgresql-10-postgis-2.4
+sudo: true
 
 branches:
   only:
     - master
     - dev
 
+addons:
+  postgresql: "10"
+  apt:
+    packages:
+      - postgresql-10-postgis-2.4
+      - proj-bin
+      - postgresql-10-postgis-2.4-scripts
+
+before_install:
+  - sudo cp /etc/postgresql/9.6/main/pg_hba.conf /etc/postgresql/10/main/pg_hba.conf
+  - sudo /etc/init.d/postgresql restart
+
+
 install:
   - npm install
 
 before_script:
-  - psql -U postgres -p 5433 -c "SELECT '5433', PostGIS_full_version()"
-
+  - psql -U postgres -p 5433 -c "CREATE EXTENSION postgis;"
+  - psql -U postgres -p 5433 -c "SELECT '5433', PostGIS_full_version();"
 
 script:
   - npm test
