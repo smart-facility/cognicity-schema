@@ -21,3 +21,6 @@ CHANGE LOG
 - added district_id field to tags property of reports
 
 ### v3.0.7
+- updated Travis tests against PostgreSQL v10 with PostGIS v2.4
+- updated Travis tests to use Node v8.9.3 (production)
+- updated README.md minimum requirements

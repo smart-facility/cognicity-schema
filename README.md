@@ -66,8 +66,8 @@ Flood affected area polygon data provided by emergency services via the REM inte
 <dl>Broward County section grids courtesy of Broward County (http://gis.broward.org/GISData.htm)</dl>
 
 ### Dependencies
-* [PostgreSQL](http://www.postgresql.org) version 9.5 or later, with
-* [PostGIS](http://postgis.net) version 2.0 or later
+* [PostgreSQL](http://www.postgresql.org) version 9.6 or later, with
+* [PostGIS](http://postgis.net) version 2.3 or later
 
 ### Installation
 * The PostgreSQL database server must be running with a UTF-8 character set.
