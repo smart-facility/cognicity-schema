@@ -6,6 +6,9 @@ sudo: false
 
 addons:
   postgresql: "10.1"
+  apt:
+    packages:
+      - postgresql-10.1
 
 branches:
   only:
