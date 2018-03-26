@@ -51,7 +51,7 @@ CREATE TABLE cognicity.local_areas(
   parent_name character varying,
   city_name character varying,
   instance_region_code character varying NOT NULL,
-  district_id integer,
+  attributes json,
   CONSTRAINT local_area_pkey PRIMARY KEY (pkey)
 );
 
