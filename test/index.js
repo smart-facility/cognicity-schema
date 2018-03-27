@@ -38,7 +38,7 @@ let deployments = {
       {
         'name': 'Surabaya',
         'test_instance_region_code': 'sby',
-        'test_local_area_id': 'null',
+        'test_local_area_id': null,
         'test_report_lat': -7.410,
         'test_report_lon': 112.771,
         'test_report_text': 'report text',
@@ -50,7 +50,7 @@ let deployments = {
       {
         'name': 'Bandung',
         'test_instance_region_code': 'bdg',
-        'test_local_area_id': 'null',
+        'test_local_area_id': null,
         'test_report_lat': -6.930,
         'test_report_lon': 107.650,
         'test_report_text': 'report text',
@@ -62,7 +62,7 @@ let deployments = {
       {
         'name': 'Semarang',
         'test_instance_region_code': 'srg',
-        'test_local_area_id': 'null',
+        'test_local_area_id': null,
         'test_report_lat': -7.1141,
         'test_report_lon': 110.3850,
         'test_report_text': 'report text',

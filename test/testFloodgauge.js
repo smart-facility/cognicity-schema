@@ -51,8 +51,8 @@ export default (db, instance) => {
           test.value(data[0].observation_comment).is('comment');
           test.value(data[0].tags.instance_region_code)
             .is(instance.test_instance_region_code);
-          test.value(data[0].tags.local_area_id)
-            .is(instance.test_local_area_id);
+          // test.value(data[0].tags.local_area_id)
+          //  .is(instance.test_local_area_id);
           done();
         })
         .catch((error) => test.fail(error));
