@@ -28,14 +28,18 @@ CREATE OR REPLACE FUNCTION grasp.push_to_all_reports(varchar)
   RETURNS varchar AS $$
       DECLARE
         -- internal variables
-        card_id ALIAS FOR $1; -- the report in grasp.reports
-        result VARCHAR;
+        cardId ALIAS FOR $1; -- the report in grasp.reports
+        reportId BIGINT;
+        reportArea VARCHAR;
       BEGIN
         INSERT INTO cognicity.all_reports (fkey, created_at, text, source, disaster_type, lang, url, report_data, the_geom, image_url)
           SELECT reports.pkey, reports.created_at, reports.text, 'grasp', reports.disaster_type, cards.language, cards.card_id, reports.card_data, reports.the_geom, reports.image_url
-          FROM grasp.cards AS cards, grasp.reports AS reports WHERE cards.card_id = card_id AND reports.card_id = card_id
-        RETURNING '{"reportId":'|| pkey::varchar ||', "reportArea":'|| report_area ||'}' INTO result;
-      RETURN result;
+          FROM grasp.cards AS cards, grasp.reports AS reports WHERE cards.card_id = cardId::uuid AND reports.card_id = cardId::uuid
+          RETURNING pkey INTO reportId;
+
+          SELECT tags->>'instance_region_code' INTO reportArea FROM cognicity.all_reports WHERE pkey = reportId;
+
+      RETURN ('{"reportId":' || reportId || ', "reportArea":'''|| reportArea ||'''}');
   END;
 $$ LANGUAGE plpgsql;
 ALTER FUNCTION grasp.push_to_all_reports(varchar)

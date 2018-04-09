@@ -31,8 +31,19 @@ export default (db, instance) => {
         db.oneOrNone(query, values)
           .then((data) => {
             reportFkey = data.pkey;
-            
-            done();
+
+            let query = `SELECT * FROM grasp.push_to_all_reports($1)`
+
+            let values = [cardId]
+
+            db.oneOrNone(query, values)
+              .then((data) => {
+                // this should be valid JSON.
+                console.log(data.push_to_all_reports)
+                done();
+              })
+
+            //done();
           })
           .catch((error) => console.log(error));
         })

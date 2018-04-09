@@ -6,6 +6,7 @@ const pgp = require('pg-promise')({
 
 const DATABASE = process.env['PGDATABASE'];
 const COUNTRY = process.env['COUNTRY'];
+const PORT = process.env['PGPORT'];
 console.log('Testing against ' + DATABASE + ' for ' + COUNTRY);
 
 import testInstanceRegions from './testInstanceRegions.js';
@@ -20,7 +21,7 @@ import testVersion from './testVersion';
 
 let deployments = {
   'indonesia': {
-    'connection': 'postgres://postgres@localhost:5432/' + DATABASE,
+    'connection': 'postgres://postgres@localhost:' + PORT + '/' + DATABASE,
     'name': 'cognicity_indonesia',
     'instances': [
       {
@@ -75,7 +76,7 @@ let deployments = {
   },
 
   'india': {
-    'connection': 'postgres://postgres@localhost:5432/' + DATABASE,
+    'connection': 'postgres://postgres@localhost:' + PORT + '/' + DATABASE,
     'name': 'cognicity_india',
     'instances': [
       {
@@ -117,7 +118,7 @@ let deployments = {
     ],
   },
   'us': {
-    'connection': 'postgres://postgres@localhost:5432/' + DATABASE,
+    'connection': 'postgres://postgres@localhost:' + PORT + '/' + DATABASE,
     'name': 'cognicity_us',
     'instances': [
       {
