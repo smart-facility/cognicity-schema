@@ -8,40 +8,35 @@ $BODY$
 		IF (TG_OP = 'UPDATE') THEN
       UPDATE cognicity.all_reports SET image_url = NEW.image_url WHERE fkey = NEW.pkey AND source = 'grasp';
 			RETURN NEW;
-		ELSIF (TG_OP = 'INSERT') THEN
-			INSERT INTO cognicity.all_reports (fkey, created_at, text, source, disaster_type, lang, url, report_data, the_geom, image_url)
-      SELECT NEW.pkey, NEW.created_at, NEW.text, 'grasp', NEW.disaster_type, card.language, card.card_id, NEW.card_data, NEW.the_geom, NEW.image_url
-      FROM grasp.cards AS card WHERE card.card_id = NEW.card_id;
-			RETURN NEW;
 		END IF;
 	END;
 $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
 ALTER FUNCTION grasp.update_all_reports_from_grasp()
-  OWNER TO postgres;
+  OWNER TO postgres
 
 -- Update all_reports table
 CREATE TRIGGER trigger_update_all_reports_from_grasp
-  BEFORE INSERT OR UPDATE
+  BEFORE UPDATE
   ON grasp.reports
   FOR EACH ROW
-  EXECUTE PROCEDURE grasp.update_all_reports_from_grasp();
+EXECUTE PROCEDURE grasp.update_all_reports_from_grasp();
 
---Notifications on  grasp cards table updates
-CREATE OR REPLACE FUNCTION grasp.notify_grasp_cards_trigger() RETURNS trigger AS $$
-DECLARE
-report_id BIGINT;
-report_area VARCHAR;
-BEGIN
-  SELECT into report_id, report_area c.PKEY, c.tags->>'instance_region_code' FROM cognicity.all_reports c, grasp.reports g WHERE c.fkey = g.pkey AND c.source = 'grasp' AND g.card_id = NEW.card_id;
-  PERFORM pg_notify('watchers', '{"' || TG_TABLE_NAME || '":{"pkey":"' || NEW.pkey || '", "username": "'|| NEW.username ||'", "network": "' || NEW.network || '", "language": "'|| NEW.language ||'", "report_id": "' || report_id ||'", "report_impl_area": "' || report_area || '"}}' );
-  RETURN new;
-END;
+-- Push a grasp card report to all_reports. Requires card_id UUID.
+CREATE OR REPLACE FUNCTION grasp.push_to_all_reports(varchar)
+  RETURNS varchar AS $$
+      DECLARE
+        -- internal variables
+        card_id ALIAS FOR $1; -- the report in grasp.reports
+        result VARCHAR;
+      BEGIN
+        INSERT INTO cognicity.all_reports (fkey, created_at, text, source, disaster_type, lang, url, report_data, the_geom, image_url)
+          SELECT reports.pkey, reports.created_at, reports.text, 'grasp', reports.disaster_type, cards.language, cards.card_id, reports.card_data, reports.the_geom, reports.image_url
+          FROM grasp.cards AS cards, grasp.reports AS reports WHERE cards.card_id = card_id AND reports.card_id = card_id
+        RETURNING '{"reportId":'|| pkey::varchar ||', "reportArea":'|| report_area ||'}' INTO result;
+      RETURN result;
+  END;
 $$ LANGUAGE plpgsql;
-
-CREATE TRIGGER watch_grasp_cards_trigger
-  AFTER UPDATE ON grasp.cards
-  FOR EACH ROW
-  WHEN (NEW.received = TRUE)
-  EXECUTE PROCEDURE grasp.notify_grasp_cards_trigger();
+ALTER FUNCTION grasp.push_to_all_reports(varchar)
+  OWNER TO postgres

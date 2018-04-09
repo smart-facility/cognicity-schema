@@ -8,6 +8,7 @@ branches:
   only:
     - master
     - dev
+    - notifications
 
 addons:
   postgresql: "10"

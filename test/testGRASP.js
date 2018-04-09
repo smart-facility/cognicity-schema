@@ -31,6 +31,7 @@ export default (db, instance) => {
         db.oneOrNone(query, values)
           .then((data) => {
             reportFkey = data.pkey;
+            
             done();
           })
           .catch((error) => console.log(error));
