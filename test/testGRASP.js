@@ -38,12 +38,9 @@ export default (db, instance) => {
 
             db.oneOrNone(query, values)
               .then((data) => {
-                // this should be valid JSON.
-                console.log(data.push_to_all_reports)
-                done();
+                JSON.stringify(data); // Check output is valid JSON
+                done(); 
               })
-
-            //done();
           })
           .catch((error) => console.log(error));
         })
