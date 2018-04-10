@@ -11,7 +11,7 @@ export default (db, instance) => {
     before('Insert dummy GRASP data', (done) => {
     // Insert test data
     let query = `INSERT INTO grasp.cards (username, network, language, received)
-    VALUES ('user', 'test network', 'en', True) RETURNING pkey, card_id`;
+    VALUES ('username', 'test network', 'en', True) RETURNING pkey, card_id`;
 
     db.oneOrNone(query)
       .then((data) => {
@@ -32,15 +32,18 @@ export default (db, instance) => {
           .then((data) => {
             reportFkey = data.pkey;
 
-            let query = `SELECT * FROM grasp.push_to_all_reports($1)`
+            let query = `SELECT * FROM grasp.push_to_all_reports($1) as notify`;
 
-            let values = [cardId]
+            let values = [cardId];
 
             db.oneOrNone(query, values)
               .then((data) => {
-                JSON.stringify(data); // Check output is valid JSON
-                done(); 
-              })
+                let response = JSON.parse(data.notify);
+                test.value(response.language).is('en');
+                test.value(response.username).is('username');
+                test.value(response.network).is('test network');
+                done();
+              });
           })
           .catch((error) => console.log(error));
         })
