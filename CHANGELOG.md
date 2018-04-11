@@ -25,3 +25,4 @@ CHANGE LOG
 - updated Travis tests to use Node v8.9.3 (production)
 - updated README.md minimum requirements
 - added 'attributes' column to local_areas
+- implemented new notification architecture
