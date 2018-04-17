@@ -14,7 +14,7 @@ $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
 ALTER FUNCTION grasp.update_all_reports_from_grasp()
-  OWNER TO postgres
+  OWNER TO postgres;
 
 -- Update all_reports table
 CREATE TRIGGER trigger_update_all_reports_from_grasp
@@ -47,4 +47,4 @@ CREATE OR REPLACE FUNCTION grasp.push_to_all_reports(varchar)
   END;
 $$ LANGUAGE plpgsql;
 ALTER FUNCTION grasp.push_to_all_reports(varchar)
-  OWNER TO postgres
+  OWNER TO postgres;
