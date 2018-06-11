@@ -26,3 +26,5 @@ CHANGE LOG
 - updated README.md minimum requirements
 - added 'attributes' column to local_areas
 - implemented new notification architecture
+- requires cognicity-server v3.0.6 or later
+- handle null instance region codes
