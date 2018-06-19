@@ -1,6 +1,6 @@
 {
   "name": "cognicity-schema",
-  "version": "3.0.7",
+  "version": "3.1.0",
   "description": "Cognicity Database Schema",
   "engines": {
     "node": ">=8.1.4"

@@ -113,7 +113,7 @@ CREATE FUNCTION cognicity.version()
   RETURNS varchar
   AS $BODY$
   BEGIN
-  RETURN '3.0.7';
+  RETURN '3.1.0';
   END
   $BODY$
 LANGUAGE plpgsql VOLATILE

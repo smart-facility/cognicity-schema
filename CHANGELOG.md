@@ -28,3 +28,5 @@ CHANGE LOG
 - implemented new notification architecture
 - requires cognicity-server v3.0.6 or later
 - handle null instance region codes
+
+### v3.1.0
