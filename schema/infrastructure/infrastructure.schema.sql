@@ -28,3 +28,12 @@ CREATE TABLE infrastructure.waterways (
 );
 SELECT AddGeometryColumn ('infrastructure','waterways','the_geom',4326,'LINESTRING',3);
 ALTER TABLE infrastructure.waterways ALTER COLUMN the_geom SET NOT NULL;
+
+CREATE TABLE infrastructure.sites (
+    pkey bigserial,
+    name character varying(50),
+    tags json,
+    CONSTRAINT sites_pkey PRIMARY KEY (pkey)
+);
+SELECT AddGeometryColumn ('infrastructure','sites','the_geom',4326,'POINT',3);
+ALTER TABLE infrastructure.sites ALTER COLUMN the_geom SET NOT NULL;
