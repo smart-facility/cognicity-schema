@@ -37,3 +37,12 @@ CREATE TABLE infrastructure.sites (
 );
 SELECT AddGeometryColumn ('infrastructure','sites','the_geom',4326,'POINT',3);
 ALTER TABLE infrastructure.sites ALTER COLUMN the_geom SET NOT NULL;
+
+CREATE TABLE infrastructure.basins (
+    pkey bigserial,
+    name character varying(50),
+    tags json,
+    CONSTRAINT basins_pkey PRIMARY KEY (pkey)
+);
+SELECT AddGeometryColumn ('infrastructure','basins','the_geom',4326,'POINT',3);
+ALTER TABLE infrastructure.basins ALTER COLUMN the_geom SET NOT NULL;
