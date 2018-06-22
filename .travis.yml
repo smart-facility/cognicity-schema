@@ -1,0 +1,35 @@
+dist: trusty
+language: node_js
+node_js:
+   - "8.9.3"
+sudo: true
+
+branches:
+  only:
+    - master
+    - dev
+    - notifications
+
+addons:
+  postgresql: "10"
+  apt:
+    packages:
+      - postgresql-10-postgis-2.4
+      - proj-bin
+      - postgresql-10-postgis-2.4-scripts
+
+before_install:
+  - sudo cp /etc/postgresql/9.6/main/pg_hba.conf /etc/postgresql/10/main/pg_hba.conf
+  - sudo /etc/init.d/postgresql restart
+  - export PGPORT=5433
+
+install:
+  - npm install
+
+script:
+  - npm test
+
+after_success:
+  - if [[ $TRAVIS_BRANCH != 'master' ]]; then BRANCH='dev'; else BRANCH='master'; fi;
+  - export PGDATABASE=cognicity; npm run build
+  - git clone -b $BRANCH https://github.com/urbanriskmap/cognicity-server.git urbanriskmap/cognicity-server ; cd urbanriskmap/cognicity-server ; npm install ; export PGPORT=5433 ; npm test

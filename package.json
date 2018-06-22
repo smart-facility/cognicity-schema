@@ -1,0 +1,57 @@
+{
+  "name": "cognicity-schema",
+  "version": "3.1.0",
+  "description": "Cognicity Database Schema",
+  "engines": {
+    "node": ">=8.1.4"
+  },
+  "scripts": {
+    "build": "./build/run.sh",
+    "mocha": "mocha --require babel-core/register test/index.js",
+    "lint": "eslint --fix test",
+    "test-indonesia": "export COUNTRY=indonesia PGDATABASE=cognicity_test_`date +%s`; npm run build ; npm run mocha; dropdb $PGDATABASE",
+    "test-india": "export COUNTRY=india ; export PGDATABASE=cognicity_test_`date +%s` ; npm run build ; npm run mocha; dropdb $PGDATABASE",
+    "test-us": "export COUNTRY=us ; export PGDATABASE=cognicity_test_`date +%s` ; npm run build ; npm run mocha; dropdb $PGDATABASE",
+    "test": "npm run lint ; npm run test-indonesia ; npm run test-india; npm run test-us"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/urbanriskmap/cognicity-schema.git"
+  },
+  "keywords": [
+    "geosocial",
+    "cognicity"
+  ],
+  "author": "Tomas Holderness",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/urbanriskmap/cognicity-schema/issues"
+  },
+  "homepage": "https://github.com/urbanriskmap/cognicity-schema#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-env": "^1.6.0",
+    "bluebird": "^3.5.0",
+    "eslint": "^4.1.1",
+    "eslint-config-google": "^0.9.1",
+    "mocha": "^3.0.2",
+    "pg-promise": "^6.1.1",
+    "unit.js": "^2.0.0"
+  },
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "parserOptions": {
+      "ecmaVersion": 7,
+      "sourceType": "module"
+    },
+    "env": {
+      "node": true,
+      "mocha": true
+    },
+    "rules": {
+      "no-console": 0,
+      "no-unused-vars": 1
+    }
+  }
+}
